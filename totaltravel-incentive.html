@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conceptgesprek aanvragen — Incentive — Total Travel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sienna:#a0522d;--sienna-mid:#c47a4a;--sienna-lt:#d9956a;
+  --gold:#b8996a;--gold-lt:#cdb48e;
+  --ivory:#f8f3eb;--ivory-2:#f2ead8;--ivory-3:#ebe0ca;--ivory-4:#e0d2b8;
+  --cream:#faf7f2;
+  --text:#2c1f0e;--text-2:#5a3e28;--text-3:#8a6d52;--text-4:#b09070;
+  --border:rgba(160,82,45,0.14);--border-md:rgba(160,82,45,0.25);--border-str:rgba(160,82,45,0.40);
+  --radius:4px;--dm:'DM Sans',sans-serif;--pf:'Playfair Display',Georgia,serif;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--text);font-family:var(--dm);font-size:15px;line-height:1.6;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(160,82,45,.05) 0%,transparent 70%),
+             radial-gradient(ellipse 50% 60% at 100% 100%,rgba(184,153,106,.06) 0%,transparent 60%);}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:62px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,247,242,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--border-md);}
+.nav-logo{font-family:var(--dm);font-size:20px;font-weight:500;letter-spacing:.20em;text-transform:uppercase;color:var(--text);text-decoration:none;}
+.nav-logo .dot{color:var(--sienna);}
+.nav-back{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);text-decoration:none;display:flex;align-items:center;gap:7px;transition:color .2s var(--ease);}
+.nav-back:hover{color:var(--sienna);}
+.nav-back svg{transition:transform .2s var(--ease);}
+.nav-back:hover svg{transform:translateX(-3px);}
+.nav-links{display:flex;align-items:center;gap:24px;list-style:none;}
+.nav-links a{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--sienna);}
+@media(max-width:700px){.nav-links{display:none;}}
+
+/* PAGE */
+.page{position:relative;z-index:1;min-height:100vh;padding:110px 24px 80px;display:flex;flex-direction:column;align-items:center;}
+
+/* HEADER */
+.page-header{text-align:center;max-width:620px;margin:0 auto 56px;}
+.eyebrow{font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--sienna);margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:12px;}
+.eyebrow::before,.eyebrow::after{content:'';width:28px;height:1px;background:var(--sienna-lt);opacity:.6;}
+.page-h1{font-family:var(--pf);font-size:clamp(32px,5vw,52px);font-weight:400;line-height:1.12;color:var(--text);margin-bottom:18px;}
+.page-h1 em{font-style:italic;color:var(--sienna-mid);}
+.page-sub{font-size:15px;color:var(--text-3);line-height:1.75;font-weight:300;}
+
+/* PROGRESS */
+.prog-wrap{max-width:720px;width:100%;margin:0 auto 44px;}
+.prog-steps{display:flex;align-items:flex-start;}
+.prog-step{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;position:relative;}
+.prog-step:not(:last-child)::after{content:'';position:absolute;top:14px;left:calc(50% + 16px);right:calc(-50% + 16px);height:1px;background:var(--border-md);transition:background .35s;}
+.prog-step.done:not(:last-child)::after{background:var(--sienna-lt);}
+.prog-circle{width:28px;height:28px;border-radius:50%;border:1px solid var(--border-str);background:var(--ivory-2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--text-3);transition:all .2s var(--ease);position:relative;z-index:1;}
+.prog-step.active .prog-circle{background:var(--sienna);border-color:var(--sienna);color:#fff;}
+.prog-step.done .prog-circle{background:var(--ivory-3);border-color:var(--sienna-lt);color:var(--sienna);}
+.prog-label{font-size:10px;letter-spacing:.06em;color:var(--text-4);text-transform:uppercase;font-weight:400;text-align:center;white-space:nowrap;transition:color .2s;}
+.prog-step.active .prog-label{color:var(--sienna);}
+.prog-step.done .prog-label{color:var(--text-3);}
+
+/* CARD */
+.form-card{background:var(--ivory);border:1px solid var(--border-md);max-width:740px;width:100%;margin:0 auto;position:relative;overflow:hidden;box-shadow:0 2px 24px rgba(90,40,10,.06);}
+.form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--sienna-lt) 40%,var(--gold) 60%,transparent);opacity:.6;}
+.card-corner{position:absolute;opacity:.2;}
+.card-corner.tl{top:14px;left:14px;}
+.card-corner.tr{top:14px;right:14px;}
+.card-corner svg{width:36px;height:36px;}
+
+/* STEPS */
+.f-step{display:none;padding:44px 50px 36px;animation:fadeUp .28s ease;}
+.f-step.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.step-hdr{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.step-num{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--sienna-mid);font-weight:500;margin-bottom:6px;}
+.step-title{font-family:var(--pf);font-size:24px;font-weight:400;color:var(--text);line-height:1.25;}
+.step-title em{font-style:italic;color:var(--sienna-mid);}
+
+/* GRID */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;}
+.fgrid.c1{grid-template-columns:1fr;}
+.ff{grid-column:1/-1;}
+
+/* FIELD */
+.field{display:flex;flex-direction:column;gap:7px;}
+.field label{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);}
+.req{color:var(--sienna);margin-left:2px;}
+.field input,.field select,.field textarea{background:#fff;border:1px solid var(--border-md);color:var(--text);font-family:var(--dm);font-size:14px;font-weight:300;padding:11px 14px;border-radius:var(--radius);outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;width:100%;}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%238a6d52' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;cursor:pointer;}
+.field select option{color:var(--text);background:#fff;}
+.field textarea{resize:vertical;min-height:100px;line-height:1.6;}
+.field input::placeholder,.field textarea::placeholder{color:var(--text-4);font-weight:300;}
+.field input:hover,.field select:hover,.field textarea:hover{border-color:var(--border-str);}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--sienna-mid);box-shadow:0 0 0 3px rgba(160,82,45,.1);}
+.field input.err,.field select.err,.field textarea.err{border-color:#c0392b;box-shadow:0 0 0 3px rgba(192,57,43,.08);}
+.hint{font-size:11px;color:var(--text-4);font-weight:300;}
+.errmsg{font-size:11px;color:#b52a1a;display:none;}
+.errmsg.show{display:block;}
+
+/* RADIO TILES */
+.rgroup{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.rgroup.c3{grid-template-columns:1fr 1fr 1fr;}
+.rtile{display:flex;align-items:center;gap:10px;background:var(--ivory-2);border:1px solid var(--border-md);padding:10px 13px;border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--text-3);user-select:none;transition:border-color .15s,background .15s,color .15s;}
+.rtile:hover{border-color:var(--sienna-lt);color:var(--text-2);background:var(--ivory-3);}
+.rtile.on{border-color:var(--sienna);background:rgba(160,82,45,.07);color:var(--sienna);}
+.rdot{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border-str);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;}
+.rtile.on .rdot{border-color:var(--sienna);background:var(--sienna);}
+.rtile.on .rdot::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff;}
+
+/* CHECK TILES */
+.cgroup{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.ctile{display:flex;align-items:center;gap:10px;background:var(--ivory-2);border:1px solid var(--border-md);padding:10px 13px;border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--text-3);user-select:none;transition:border-color .15s,background .15s,color .15s;}
+.ctile:hover{border-color:var(--sienna-lt);color:var(--text-2);background:var(--ivory-3);}
+.ctile.on{border-color:var(--sienna);background:rgba(160,82,45,.07);color:var(--sienna);}
+.cbox{width:16px;height:16px;border-radius:2px;border:1.5px solid var(--border-str);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;}
+.ctile.on .cbox{border-color:var(--sienna);background:var(--sienna);}
+.ctile.on .cbox::after{content:'';display:block;width:4px;height:7px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px);}
+
+/* PRIVACY */
+.prow{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--ivory-2);border:1px solid var(--border-md);border-radius:var(--radius);cursor:pointer;transition:border-color .15s,background .15s;}
+.prow:hover{border-color:var(--sienna-lt);}
+.prow.on{border-color:var(--sienna);background:rgba(160,82,45,.06);}
+.pbox{width:18px;height:18px;border-radius:3px;border:1.5px solid var(--border-str);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;background:#fff;transition:border-color .15s,background .15s;}
+.prow.on .pbox{border-color:var(--sienna);background:var(--sienna);}
+.prow.on .pbox::after{content:'';display:block;width:5px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px);}
+.ptext{font-size:13px;color:var(--text-2);line-height:1.6;font-weight:300;}
+.ptext a{color:var(--sienna);text-decoration:underline;}
+
+/* SECTION TITLE */
+.stitle{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--sienna);font-weight:500;margin:28px 0 14px;display:flex;align-items:center;gap:10px;}
+.stitle::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* BUDGET SLIDER */
+.budgetval{font-family:var(--pf);font-size:22px;color:var(--sienna-mid);font-style:italic;margin-bottom:14px;display:block;}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--ivory-3);border-radius:2px;outline:none;border:none;padding:0;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--sienna);cursor:pointer;border:3px solid #fff;box-shadow:0 1px 4px rgba(160,82,45,.25);}
+.rlabels{display:flex;justify-content:space-between;font-size:11px;color:var(--text-4);margin-top:8px;}
+
+/* INFOBOX — B2B context toelichting */
+.infobox{background:rgba(160,82,45,.05);border:1px solid var(--border-md);border-left:3px solid var(--sienna-lt);padding:14px 18px;font-size:13px;color:var(--text-2);line-height:1.65;font-weight:300;border-radius:0 var(--radius) var(--radius) 0;}
+.infobox strong{color:var(--sienna);font-weight:500;}
+
+/* FORM NAV */
+.fnav{display:flex;justify-content:space-between;align-items:center;padding:24px 50px 36px;border-top:1px solid var(--border);background:var(--ivory-2);}
+.btn-prev{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);background:transparent;border:1px solid var(--border-md);padding:11px 22px;cursor:pointer;transition:color .2s,border-color .2s;border-radius:var(--radius);}
+.btn-prev:hover{color:var(--text);border-color:var(--border-str);}
+.btn-next{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--sienna);border:none;padding:12px 28px;cursor:pointer;transition:background .2s,transform .15s;border-radius:var(--radius);display:flex;align-items:center;gap:8px;}
+.btn-next:hover{background:var(--text-2);}
+.stepcnt{font-size:11px;color:var(--text-4);letter-spacing:.08em;}
+
+/* SUCCESS */
+.success{display:none;text-align:center;padding:72px 50px;}
+.success.show{display:block;animation:fadeUp .35s ease;}
+.sicon{width:68px;height:68px;border-radius:50%;background:rgba(160,82,45,.1);border:1px solid var(--sienna-lt);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;color:var(--sienna);}
+.sh2{font-family:var(--pf);font-size:34px;font-weight:400;color:var(--text);margin-bottom:14px;}
+.sh2 em{font-style:italic;color:var(--sienna-mid);}
+.sp{font-size:15px;color:var(--text-3);line-height:1.75;font-weight:300;max-width:440px;margin:0 auto 36px;}
+.sdetails{background:var(--ivory-2);border:1px solid var(--border-md);padding:20px 28px;max-width:480px;margin:0 auto 36px;text-align:left;border-radius:var(--radius);}
+.srow{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid var(--border);}
+.srow:last-child{border-bottom:none;}
+.srow span:first-child{color:var(--text-3);}
+.srow span:last-child{color:var(--text);font-weight:400;}
+.btn-home{display:inline-flex;align-items:center;gap:8px;background:var(--sienna);color:#fff;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:13px 26px;border-radius:var(--radius);text-decoration:none;transition:background .2s;}
+.btn-home:hover{background:var(--text-2);}
+
+/* LOADING */
+.overlay{display:none;position:fixed;inset:0;background:rgba(250,247,242,.8);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:18px;}
+.overlay.show{display:flex;}
+.spinner{width:36px;height:36px;border:2px solid var(--border-md);border-top-color:var(--sienna);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.spin-txt{font-size:12px;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;}
+
+/* FOOTER NOTE */
+.footnote{text-align:center;margin:28px auto 0;font-size:12px;color:var(--text-4);font-weight:300;line-height:1.8;max-width:520px;}
+.footnote a{color:var(--sienna);text-decoration:none;border-bottom:1px solid rgba(160,82,45,.3);}
+.footnote a:hover{border-bottom-color:var(--sienna);}
+.certs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
+.ctag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--border-md);color:var(--text-3);border-radius:2px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .page{padding:96px 16px 60px;}
+  .page-header{margin-bottom:40px;}
+  .f-step{padding:32px 32px 28px;}
+  .fnav{padding:20px 32px 28px;}
+  .fgrid{gap:14px 18px;}
+  .rgroup.c3{grid-template-columns:1fr 1fr;}
+  .cgroup{grid-template-columns:1fr 1fr;}
+  .success{padding:56px 32px;}
+}
+@media(max-width:560px){
+  .nav{padding:0 16px;height:56px;}
+  .nav-logo{font-size:14px;}
+  .nav-back-txt{display:none;}
+  .page{padding:80px 12px 48px;}
+  .page-header{margin-bottom:32px;}
+  .page-h1{font-size:clamp(26px,7vw,36px);}
+  .page-sub{font-size:13px;}
+  .prog-wrap{margin-bottom:28px;}
+  .prog-circle{width:24px;height:24px;font-size:10px;}
+  .prog-step:not(:last-child)::after{top:12px;left:calc(50% + 13px);right:calc(-50% + 13px);}
+  .prog-label{display:none;}
+  .form-card{margin-left:-12px;margin-right:-12px;width:calc(100% + 24px);border-left:none;border-right:none;border-radius:0;box-shadow:none;}
+  .card-corner{display:none;}
+  .f-step{padding:22px 18px 18px;}
+  .step-title{font-size:20px;}
+  .step-hdr{margin-bottom:22px;padding-bottom:16px;}
+  .fgrid{grid-template-columns:1fr;gap:12px;}
+  .ff{grid-column:1;}
+  .rgroup{grid-template-columns:1fr;gap:6px;}
+  .rgroup.c3{grid-template-columns:1fr;}
+  .cgroup{grid-template-columns:1fr 1fr;gap:6px;}
+  .rtile,.ctile{padding:9px 11px;font-size:12px;gap:8px;}
+  .rdot,.cbox{width:14px;height:14px;}
+  .field label{font-size:10px;}
+  .field input,.field select,.field textarea{font-size:14px;padding:10px 12px;}
+  .hint,.errmsg{font-size:10px;}
+  .budgetval{font-size:18px;}
+  .rlabels{font-size:10px;}
+  .stitle{font-size:9px;margin:20px 0 10px;}
+  .sdetails{padding:14px 16px;}
+  .srow{font-size:12px;flex-direction:column;gap:2px;padding:8px 0;}
+  .btn-home{font-size:10px;padding:11px 18px;}
+  .footnote{font-size:11px;}
+  .ctag{font-size:9px;padding:3px 8px;}
+}
+@media(max-width:360px){
+  .cgroup{grid-template-columns:1fr;}
+  .f-step{padding:18px 14px 14px;}
+  .fnav{padding:12px 14px 18px;}
+  .page-h1{font-size:22px;}
+}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"><div class="spinner"></div><div class="spin-txt">Aanvraag versturen…</div></div>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">TOTAL <span class="dot">&middot;</span> TRAVEL</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#zakelijk">Zakelijke Incentives</a></li>
+    <li><a href="index.html#specialisaties">Specialisaties</a></li>
+  </ul>
+  <a href="index.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    <span class="nav-back-txt">Terug naar website</span>
+  </a>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="eyebrow">Zakelijke Incentives</div>
+    <h1 class="page-h1">Vrijblijvend<br><em>conceptgesprek</em></h1>
+    <p class="page-sub">Vertel ons over uw organisatie en het doel van de incentive. Wij plannen binnen 48 uur een vrijblijvend gesprek in om de mogelijkheden te verkennen &mdash; zonder verplichtingen.</p>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-steps" id="progSteps">
+      <div class="prog-step active" data-step="1"><div class="prog-circle">1</div><div class="prog-label">Organisatie</div></div>
+      <div class="prog-step" data-step="2"><div class="prog-circle">2</div><div class="prog-label">Programma</div></div>
+      <div class="prog-step" data-step="3"><div class="prog-circle">3</div><div class="prog-label">Budget &amp; wensen</div></div>
+      <div class="prog-step" data-step="4"><div class="prog-circle">4</div><div class="prog-label">Contact</div></div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="card-corner tl"><svg viewBox="0 0 36 36" fill="none"><path d="M0 36L0 0L36 0" stroke="#a0522d" stroke-width="1"/></svg></div>
+    <div class="card-corner tr"><svg viewBox="0 0 36 36" fill="none"><path d="M0 0L36 0L36 36" stroke="#a0522d" stroke-width="1"/></svg></div>
+
+    <!-- ═══════════════════════════════ STAP 1 — ORGANISATIE ═══════════ -->
+    <div class="f-step active" id="step1">
+      <div class="step-hdr">
+        <div class="step-num">Stap 01 &mdash; 04</div>
+        <div class="step-title">Uw <em>organisatie</em></div>
+      </div>
+      <div class="fgrid">
+        <div class="field ff">
+          <div class="infobox">Incentive-reizen organiseren wij altijd op maat. Om u een zinvol voorstel te doen, beginnen we met een kort gesprek. Dit formulier helpt ons dat gesprek goed voor te bereiden. <strong>Geen verplichtingen, geen offerte &mdash; alleen een goed gesprek.</strong></div>
+        </div>
+        <div class="field ff">
+          <label>Bedrijfsnaam <span class="req">*</span></label>
+          <input type="text" id="bedrijfsnaam" placeholder="Naam van uw organisatie">
+          <div class="errmsg" id="e-bedrijfsnaam">Vul de naam van uw organisatie in</div>
+        </div>
+        <div class="field">
+          <label>Sector / branche</label>
+          <select id="sector">
+            <option value="">Selecteer een sector</option>
+            <option>Financiële dienstverlening</option>
+            <option>Farmacie / life sciences</option>
+            <option>Technologie / IT</option>
+            <option>Automotive</option>
+            <option>Retail / FMCG</option>
+            <option>Zakelijke dienstverlening</option>
+            <option>Bouw / vastgoed</option>
+            <option>Zorg &amp; welzijn</option>
+            <option>Logistiek / transport</option>
+            <option>Overheid / non-profit</option>
+            <option>Anders</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Bedrijfsgrootte (medewerkers)</label>
+          <select id="bedrijfsgrootte">
+            <option value="">Selecteer</option>
+            <option>1 – 25</option>
+            <option>26 – 100</option>
+            <option>101 – 250</option>
+            <option>251 – 500</option>
+            <option>500 – 1.000</option>
+            <option>1.000+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Naam contactpersoon <span class="req">*</span></label>
+          <input type="text" id="contactpersoon" placeholder="Voor- en achternaam">
+          <div class="errmsg" id="e-contactpersoon">Vul de naam van de contactpersoon in</div>
+        </div>
+        <div class="field">
+          <label>Functietitel</label>
+          <input type="text" id="functie" placeholder="bijv. HR-directeur, Sales Manager…">
+        </div>
+        <div class="field ff">
+          <label>Heeft u eerder zakelijke reizen of incentives georganiseerd?</label>
+          <div class="rgroup c3" id="rg-ervaring">
+            <div class="rtile" data-val="Ja, regelmatig"><div class="rdot"></div>Ja, regelmatig</div>
+            <div class="rtile" data-val="Ja, incidenteel"><div class="rdot"></div>Ja, incidenteel</div>
+            <div class="rtile" data-val="Nee, eerste keer"><div class="rdot"></div>Nee, eerste keer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ STAP 2 — PROGRAMMA ═════════════ -->
+    <div class="f-step" id="step2">
+      <div class="step-hdr">
+        <div class="step-num">Stap 02 &mdash; 04</div>
+        <div class="step-title">Het <em>programma</em></div>
+      </div>
+      <div class="fgrid">
+
+        <div class="field ff">
+          <label>Wat is het primaire doel van de incentive? <span class="req">*</span></label>
+          <div class="rgroup" id="rg-doel">
+            <div class="rtile" data-val="Medewerkers belonen / motiveren"><div class="rdot"></div>Medewerkers belonen</div>
+            <div class="rtile" data-val="Sales-incentive voor team of dealers"><div class="rdot"></div>Sales-incentive</div>
+            <div class="rtile" data-val="Klanten / relaties bedanken"><div class="rdot"></div>Klanten bedanken</div>
+            <div class="rtile" data-val="Teambuilding &amp; verbinding"><div class="rdot"></div>Teambuilding</div>
+            <div class="rtile" data-val="Jubileum of mijlpaal vieren"><div class="rdot"></div>Jubileum / mijlpaal</div>
+            <div class="rtile" data-val="Ander doel"><div class="rdot"></div>Ander doel</div>
+          </div>
+          <div class="errmsg" id="e-doel">Selecteer het primaire doel</div>
+        </div>
+
+        <div class="field">
+          <label>Aantal deelnemers <span class="req">*</span></label>
+          <select id="aantalDeelnemers">
+            <option value="">Selecteer</option>
+            <option>10 – 20</option>
+            <option>21 – 35</option>
+            <option>36 – 50</option>
+            <option>51 – 75</option>
+            <option>76 – 100</option>
+            <option>101 – 150</option>
+            <option>151 – 200</option>
+            <option>200+</option>
+          </select>
+          <div class="errmsg" id="e-aantalDeelnemers">Selecteer het aantal deelnemers</div>
+        </div>
+
+        <div class="field">
+          <label>Duur van het programma</label>
+          <select id="duur">
+            <option value="">Selecteer</option>
+            <option>1 dag (dagprogramma)</option>
+            <option>2 dagen / 1 nacht</option>
+            <option>3 dagen / 2 nachten</option>
+            <option>4 – 5 dagen</option>
+            <option>6 – 7 dagen</option>
+            <option>Meer dan een week</option>
+            <option>Nader te bepalen</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Gewenste periode</label>
+          <input type="text" id="periode" placeholder="bijv. Q2 2026 of mei / juni">
+          <div class="hint">Indicatief is voldoende — we bespreken dit in het gesprek</div>
+        </div>
+
+        <div class="field">
+          <label>Datumflexibiliteit</label>
+          <div class="rgroup c3" id="rg-datumflex">
+            <div class="rtile" data-val="Vaste datum(s)"><div class="rdot"></div>Vaste datum(s)</div>
+            <div class="rtile" data-val="Flexibel binnen kwartaal"><div class="rdot"></div>Flexibel</div>
+            <div class="rtile" data-val="Nog volledig open"><div class="rdot"></div>Volledig open</div>
+          </div>
+        </div>
+
+        <div class="field ff">
+          <label>Bestemmingsvoorkeur</label>
+          <div class="rgroup" id="rg-bestemming">
+            <div class="rtile" data-val="Europa"><div class="rdot"></div>Europa</div>
+            <div class="rtile" data-val="Midden-Oosten (VAE, Oman, Saudi, Marokko…)"><div class="rdot"></div>Midden-Oosten</div>
+            <div class="rtile" data-val="Verre bestemmingen"><div class="rdot"></div>Verre bestemmingen</div>
+            <div class="rtile" data-val="Aan te raden door specialist"><div class="rdot"></div>Aan ons over te laten</div>
+          </div>
+          <div class="hint" style="margin-top:8px">Specifieke bestemmingen of idee&euml;n kunt u hieronder toelichten</div>
+        </div>
+
+        <div class="field ff">
+          <label>Specifieke bestemmingen of thema&rsquo;s in gedachten?</label>
+          <input type="text" id="bestemmingDetail" placeholder="bijv. Dubai + woestijnsafari, Sevilla + flamenco, F1 Abu Dhabi…">
+        </div>
+
+        <div class="field ff">
+          <label>Sfeer &amp; karakter van het programma</label>
+          <div class="cgroup" id="cg-sfeer">
+            <div class="ctile" data-val="Luxe &amp; exclusief"><div class="cbox"></div>Luxe &amp; exclusief</div>
+            <div class="ctile" data-val="Actief &amp; avontuurlijk"><div class="cbox"></div>Actief &amp; avontuurlijk</div>
+            <div class="ctile" data-val="Cultureel &amp; historisch"><div class="cbox"></div>Cultureel &amp; historisch</div>
+            <div class="ctile" data-val="Culinair"><div class="cbox"></div>Culinair</div>
+            <div class="ctile" data-val="Sport (golf, F1, voetbal…)"><div class="cbox"></div>Sport</div>
+            <div class="ctile" data-val="Ontspanning &amp; wellness"><div class="cbox"></div>Ontspanning</div>
+            <div class="ctile" data-val="Teambuilding-activiteiten"><div class="cbox"></div>Teambuilding</div>
+            <div class="ctile" data-val="Zakelijke sessies incl."><div class="cbox"></div>Zakelijke sessies</div>
+            <div class="ctile" data-val="Unieke lokale ervaringen"><div class="cbox"></div>Lokale ervaringen</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ STAP 3 — BUDGET & WENSEN ═══════ -->
+    <div class="f-step" id="step3">
+      <div class="step-hdr">
+        <div class="step-num">Stap 03 &mdash; 04</div>
+        <div class="step-title">Budget &amp; <em>bijzonderheden</em></div>
+      </div>
+      <div class="fgrid">
+
+        <div class="field ff">
+          <label>Indicatief budget per deelnemer (excl. vluchten)</label>
+          <span class="budgetval" id="budgetVal">€ 1.500 p.p.</span>
+          <input type="range" id="budgetSlider" min="500" max="10000" step="250" value="1500">
+          <div class="rlabels"><span>€ 500</span><span>€ 2.500</span><span>€ 5.000</span><span>€ 10.000+</span></div>
+          <div class="hint" style="margin-top:10px">Inclusief accommodatie, programma en transfers. Vluchten apart te bepalen.</div>
+        </div>
+
+        <div class="field">
+          <label>Totaalbudget gehele groep</label>
+          <input type="text" id="totaalbudget" placeholder="bijv. € 75.000 of nader te bepalen">
+          <div class="hint">Optioneel — helpt ons direct het juiste niveau aan te bieden</div>
+        </div>
+
+        <div class="field">
+          <label>Accommodatieniveau</label>
+          <select id="accommodatie">
+            <option value="">Selecteer</option>
+            <option>4-sterren (comfort)</option>
+            <option>5-sterren (luxe)</option>
+            <option>5-sterren deluxe / iconic properties</option>
+            <option>Boutique / design hotel</option>
+            <option>Resort met exclusieve faciliteiten</option>
+            <option>Nader te bepalen</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Vluchtklasse</label>
+          <select id="vluchtklasse">
+            <option value="">Selecteer</option>
+            <option>Economy class</option>
+            <option>Premium economy</option>
+            <option>Business class</option>
+            <option>Mix (leidinggevenden business)</option>
+            <option>Nader te bepalen</option>
+          </select>
+        </div>
+
+        <div class="field ff">
+          <label>Wat verwacht u van de begeleiding ter plaatse?</label>
+          <div class="rgroup" id="rg-begeleiding">
+            <div class="rtile" data-val="Volledig begeleid (Total Travel aanwezig)"><div class="rdot"></div>Volledig begeleid</div>
+            <div class="rtile" data-val="Lokale begeleiding + support op afstand"><div class="rdot"></div>Lokale begeleiding</div>
+            <div class="rtile" data-val="Zelfstandig (draaiboek &amp; logistiek door ons)"><div class="rdot"></div>Zelfstandig met draaiboek</div>
+            <div class="rtile" data-val="Nader te bespreken"><div class="rdot"></div>Nader te bespreken</div>
+          </div>
+        </div>
+
+        <div class="stitle ff">Bijzonderheden</div>
+
+        <div class="field ff">
+          <label>Bijzondere wensen of randvoorwaarden</label>
+          <input type="text" id="bijzonder" placeholder="bijv. halal menu, rolstoeltoegankelijk, VIP-arrangement voor directie…">
+        </div>
+
+        <div class="field ff">
+          <label>Eerder georganiseerde incentives of vergelijkbare reizen</label>
+          <textarea id="eerderIncentive" placeholder="Wat heeft u eerder gedaan? Wat ging goed, wat wilt u anders? Helpt ons direct het juiste niveau te adviseren."></textarea>
+        </div>
+
+        <div class="field ff">
+          <label>Aanvullende toelichting of vragen</label>
+          <textarea id="toelichting" placeholder="Alles wat verder relevant is voor een goed eerste gesprek…"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ STAP 4 — CONTACT ═══════════════ -->
+    <div class="f-step" id="step4">
+      <div class="step-hdr">
+        <div class="step-num">Stap 04 &mdash; 04</div>
+        <div class="step-title">Uw <em>contactgegevens</em></div>
+      </div>
+      <div class="fgrid">
+        <div class="field">
+          <label>Voornaam <span class="req">*</span></label>
+          <input type="text" id="voornaam" placeholder="Jan">
+          <div class="errmsg" id="e-voornaam">Vul uw voornaam in</div>
+        </div>
+        <div class="field">
+          <label>Achternaam <span class="req">*</span></label>
+          <input type="text" id="achternaam" placeholder="de Vries">
+          <div class="errmsg" id="e-achternaam">Vul uw achternaam in</div>
+        </div>
+        <div class="field ff">
+          <label>Zakelijk e-mailadres <span class="req">*</span></label>
+          <input type="email" id="email" placeholder="jan.devries@bedrijf.nl">
+          <div class="hint">Hierop ontvangt u de bevestiging en de uitnodiging voor het gesprek</div>
+          <div class="errmsg" id="e-email">Vul een geldig e-mailadres in</div>
+        </div>
+        <div class="field">
+          <label>Telefoonnummer <span class="req">*</span></label>
+          <input type="tel" id="telefoon" placeholder="+31 6 12 34 56 78">
+          <div class="errmsg" id="e-telefoon">Vul uw telefoonnummer in</div>
+        </div>
+        <div class="field">
+          <label>Voorkeur voor gesprek</label>
+          <select id="gesprekVoorkeur">
+            <option value="">Selecteer</option>
+            <option>Telefonisch (ochtend)</option>
+            <option>Telefonisch (middag)</option>
+            <option>Telefonisch (avond)</option>
+            <option>Videogesprek (Teams / Zoom)</option>
+            <option>Persoonlijk gesprek op kantoor</option>
+            <option>WhatsApp / e-mail eerst</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Hoe heeft u ons gevonden?</label>
+          <select id="gevonden">
+            <option value="">Selecteer een optie</option>
+            <option>Google / zoekmachine</option>
+            <option>Aanbeveling van collega of relatie</option>
+            <option>LinkedIn</option>
+            <option>Eerder klant geweest</option>
+            <option>Branche-evenement</option>
+            <option>Anders</option>
+          </select>
+        </div>
+        <div class="field ff">
+          <label style="text-transform:none;letter-spacing:0;font-size:12px;color:var(--text-3);font-weight:400">Privacyverklaring <span class="req">*</span></label>
+          <div class="prow" id="privRow">
+            <div class="pbox" id="privBox"></div>
+            <span class="ptext">Ik ga akkoord met de <a href="#" id="privLink">privacyverklaring</a> van Total Travel. Mijn gegevens worden uitsluitend gebruikt voor het opnemen van contact over deze incentive-aanvraag.</span>
+          </div>
+          <div class="errmsg" id="e-privacy">Bevestig de privacyverklaring om door te gaan</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success" id="successWrap">
+      <div class="sicon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h2 class="sh2">Aanvraag <em>ontvangen</em></h2>
+      <p class="sp">Bedankt voor uw aanvraag. We nemen binnen 48 uur persoonlijk contact met u op om een vrijblijvend conceptgesprek in te plannen. We kijken ernaar uit.</p>
+      <div class="sdetails" id="sdetails"></div>
+      <a href="index.html" class="btn-home">Terug naar Total Travel <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+
+    <div class="fnav" id="formNav">
+      <button class="btn-prev" id="btnPrev" style="visibility:hidden">&#8592; Vorige</button>
+      <span class="stepcnt" id="stepcnt">Stap 1 van 4</span>
+      <button class="btn-next" id="btnNext">Volgende <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
+
+  <p class="footnote">Uw aanvraag is volledig vrijblijvend &mdash; geen offerte, alleen een gesprek.<br>
+  Total Travel is aangesloten bij United Travel (ANVR 5471 &middot; SGR 3642).<br>
+  Vragen? Bel <a href="tel:+31786817579">+31 78 681 75 79</a> of mail <a href="mailto:info@totaltravel.nl">info@totaltravel.nl</a></p>
+  <div class="certs">
+    <span class="ctag">ANVR 5471</span>
+    <span class="ctag">SGR 3642</span>
+    <span class="ctag">IATA</span>
+    <span class="ctag">Calamiteitenfonds</span>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  var step = 1;
+  var privChecked = false;
+  var radioVals = {};
+
+  function el(id) { return document.getElementById(id); }
+  function val(id) { var e = el(id); return e ? e.value.trim() : ''; }
+
+  /* ── Radio groups ── */
+  document.querySelectorAll('.rgroup').forEach(function(grp) {
+    grp.querySelectorAll('.rtile').forEach(function(tile) {
+      tile.addEventListener('click', function() {
+        grp.querySelectorAll('.rtile').forEach(function(t) { t.classList.remove('on'); });
+        tile.classList.add('on');
+        radioVals[grp.id] = tile.getAttribute('data-val');
+        if (grp.id === 'rg-doel') el('e-doel').classList.remove('show');
+      });
+    });
+  });
+
+  function getRadio(id) { return radioVals[id] || ''; }
+
+  /* ── Checkbox groups ── */
+  document.querySelectorAll('.ctile').forEach(function(tile) {
+    tile.addEventListener('click', function() { tile.classList.toggle('on'); });
+  });
+
+  function getChecks(id) {
+    var vals = [];
+    document.querySelectorAll('#' + id + ' .ctile.on').forEach(function(t) {
+      vals.push(t.getAttribute('data-val'));
+    });
+    return vals.join(', ');
+  }
+
+  /* ── Privacy ── */
+  el('privRow').addEventListener('click', function(e) {
+    if (e.target.tagName === 'A') return;
+    privChecked = !privChecked;
+    el('privRow').classList.toggle('on', privChecked);
+    if (privChecked) el('e-privacy').classList.remove('show');
+  });
+  el('privLink').addEventListener('click', function(e) { e.preventDefault(); });
+
+  /* ── Budget slider ── */
+  function fmtBudget(v) {
+    v = parseInt(v, 10);
+    return v >= 10000 ? '\u20AC\u00A010.000+ p.p.' : '\u20AC\u00A0' + v.toLocaleString('nl-NL') + ' p.p.';
+  }
+  el('budgetSlider').addEventListener('input', function() {
+    el('budgetVal').textContent = fmtBudget(this.value);
+  });
+
+  /* ── Navigatie ── */
+  el('btnPrev').addEventListener('click', function() {
+    if (step > 1) setStep(step - 1);
+  });
+  el('btnNext').addEventListener('click', function() {
+    if (!validate(step)) return;
+    if (step < 4) setStep(step + 1);
+    else submitForm();
+  });
+
+  /* ── Validatie ── */
+  function validate(s) {
+    var ok = true;
+
+    function chk(errId, inputId, bad) {
+      el(errId).classList.toggle('show', bad);
+      if (inputId) el(inputId).classList.toggle('err', bad);
+      if (bad) ok = false;
+    }
+
+    if (s === 1) {
+      chk('e-bedrijfsnaam', 'bedrijfsnaam', !val('bedrijfsnaam'));
+      chk('e-contactpersoon', 'contactpersoon', !val('contactpersoon'));
+    }
+    if (s === 2) {
+      var noDoel = !getRadio('rg-doel');
+      el('e-doel').classList.toggle('show', noDoel);
+      if (noDoel) ok = false;
+      chk('e-aantalDeelnemers', 'aantalDeelnemers', !val('aantalDeelnemers'));
+    }
+    if (s === 4) {
+      chk('e-voornaam',   'voornaam',   !val('voornaam'));
+      chk('e-achternaam', 'achternaam', !val('achternaam'));
+      var em = val('email');
+      chk('e-email', 'email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em));
+      chk('e-telefoon', 'telefoon', !val('telefoon'));
+      el('e-privacy').classList.toggle('show', !privChecked);
+      if (!privChecked) ok = false;
+    }
+    return ok;
+  }
+
+  /* ── Stap-navigatie ── */
+  function setStep(n) {
+    document.querySelectorAll('.f-step').forEach(function(s) { s.classList.remove('active'); });
+    el('step' + n).classList.add('active');
+    document.querySelectorAll('.prog-step').forEach(function(s) {
+      var sn = parseInt(s.getAttribute('data-step'), 10);
+      s.classList.remove('active', 'done');
+      if (sn === n) s.classList.add('active');
+      else if (sn < n) s.classList.add('done');
+    });
+    el('btnPrev').style.visibility = n === 1 ? 'hidden' : 'visible';
+    el('stepcnt').textContent = 'Stap ' + n + ' van 4';
+    el('btnNext').innerHTML = n === 4
+      ? 'Aanvraag versturen <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22 11 13 2 9z"/></svg>'
+      : 'Volgende <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    step = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ── Data verzamelen ── */
+  function collectData() {
+    return {
+      bedrijfsnaam:       val('bedrijfsnaam'),
+      sector:             val('sector'),
+      bedrijfsgrootte:    val('bedrijfsgrootte'),
+      contactpersoon:     val('contactpersoon'),
+      functie:            val('functie'),
+      ervaring:           getRadio('rg-ervaring'),
+      doel:               getRadio('rg-doel'),
+      aantalDeelnemers:   val('aantalDeelnemers'),
+      duur:               val('duur'),
+      periode:            val('periode'),
+      datumflex:          getRadio('rg-datumflex'),
+      bestemmingKeuze:    getRadio('rg-bestemming'),
+      bestemmingDetail:   val('bestemmingDetail'),
+      sfeer:              getChecks('cg-sfeer'),
+      budgetPP:           fmtBudget(el('budgetSlider').value),
+      totaalbudget:       val('totaalbudget'),
+      accommodatie:       val('accommodatie'),
+      vluchtklasse:       val('vluchtklasse'),
+      begeleiding:        getRadio('rg-begeleiding'),
+      bijzonder:          val('bijzonder'),
+      eerderIncentive:    val('eerderIncentive'),
+      toelichting:        val('toelichting'),
+      voornaam:           val('voornaam'),
+      achternaam:         val('achternaam'),
+      email:              val('email'),
+      telefoon:           val('telefoon'),
+      gesprekVoorkeur:    val('gesprekVoorkeur'),
+      gevonden:           val('gevonden')
+    };
+  }
+
+  function buildBody(d) {
+    var dt = new Date().toLocaleDateString('nl-NL', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    var li = '\n  \u2022 ';
+    return [
+      'INCENTIVE CONCEPTGESPREK \u2014 TOTAL TRAVEL',
+      'Ingediend op: ' + dt, '',
+      '\u2500\u2500 ORGANISATIE',
+      'Bedrijf: '           + (d.bedrijfsnaam    || '\u2014'),
+      'Sector: '            + (d.sector          || '\u2014'),
+      'Grootte: '           + (d.bedrijfsgrootte || '\u2014'),
+      'Contactpersoon: '    + (d.contactpersoon  || '\u2014'),
+      'Functie: '           + (d.functie         || '\u2014'),
+      'Ervaring incentive: '+ (d.ervaring        || '\u2014'), '',
+      '\u2500\u2500 PROGRAMMA',
+      'Doel: '              + (d.doel            || '\u2014'),
+      'Deelnemers: '        + (d.aantalDeelnemers|| '\u2014'),
+      'Duur: '              + (d.duur            || '\u2014'),
+      'Periode: '           + (d.periode         || '\u2014'),
+      'Datumflexibiliteit: '+ (d.datumflex       || '\u2014'),
+      'Bestemming: '        + (d.bestemmingKeuze || '\u2014'),
+      'Detail bestemming: ' + (d.bestemmingDetail|| '\u2014'),
+      'Sfeer / thema\'s: '   + (d.sfeer           || '\u2014'), '',
+      '\u2500\u2500 BUDGET & WENSEN',
+      'Budget p.p.: '       + (d.budgetPP        || '\u2014'),
+      'Totaalbudget: '      + (d.totaalbudget    || '\u2014'),
+      'Accommodatie: '      + (d.accommodatie    || '\u2014'),
+      'Vluchtklasse: '      + (d.vluchtklasse    || '\u2014'),
+      'Begeleiding: '       + (d.begeleiding     || '\u2014'),
+      'Bijzonderheden: '    + (d.bijzonder       || '\u2014'), '',
+      'Eerder incentive:', d.eerderIncentive || '\u2014', '',
+      'Toelichting:', d.toelichting || '\u2014', '',
+      '\u2500\u2500 CONTACTGEGEVENS',
+      'Naam: '              + d.voornaam + ' ' + d.achternaam,
+      'E-mail: '            + d.email,
+      'Telefoon: '          + d.telefoon,
+      'Gesprek voorkeur: '  + (d.gesprekVoorkeur || '\u2014'),
+      'Gevonden via: '      + (d.gevonden        || '\u2014'), '',
+      'Verzonden via totaltravel.nl \u2014 incentive-aanvraagformulier'
+    ].join('\n');
+  }
+
+  function buildConfirm(d) {
+    return [
+      'Beste ' + d.voornaam + ',', '',
+      'Hartelijk dank voor uw aanvraag bij Total Travel!', '',
+      'Wij nemen binnen 48 uur persoonlijk contact met u op om een vrijblijvend conceptgesprek in te plannen.', '',
+      'Overzicht van uw aanvraag:',
+      'Bedrijf: '        + (d.bedrijfsnaam     || '\u2014'),
+      'Doel: '           + (d.doel             || '\u2014'),
+      'Deelnemers: '     + (d.aantalDeelnemers || '\u2014'),
+      'Periode: '        + (d.periode          || 'nader te bepalen'),
+      'Budget p.p.: '    + (d.budgetPP         || '\u2014'), '',
+      'Met vriendelijke groet,',
+      'Total Travel \u2014 Zakelijke Incentives',
+      'T: +31 78 681 75 79 | info@totaltravel.nl'
+    ].join('\n');
+  }
+
+  /* ── Verzenden ── */
+  function submitForm() {
+    var d = collectData();
+    el('overlay').classList.add('show');
+    setTimeout(function() {
+      el('overlay').classList.remove('show');
+      var subj = encodeURIComponent('Incentive aanvraag: ' + d.bedrijfsnaam + ' \u2014 ' + d.aantalDeelnemers + ' pers.');
+      window.location.href = 'mailto:info@totaltravel.nl?subject=' + subj + '&body=' + encodeURIComponent(buildBody(d));
+      setTimeout(function() {
+        window.open('mailto:' + d.email + '?subject=' + encodeURIComponent('Bevestiging conceptgesprek \u2014 Total Travel Incentives') + '&body=' + encodeURIComponent(buildConfirm(d)), '_blank');
+      }, 600);
+      showSuccess(d);
+    }, 1000);
+  }
+
+  function showSuccess(d) {
+    document.querySelectorAll('.f-step').forEach(function(s) { s.classList.remove('active'); });
+    el('formNav').style.display = 'none';
+    el('progSteps').style.opacity = '0.35';
+
+    function row(l, v) { return v ? '<div class="srow"><span>' + l + '</span><span>' + v + '</span></div>' : ''; }
+    el('sdetails').innerHTML = [
+      row('Bedrijf',       d.bedrijfsnaam),
+      row('Doel',          d.doel),
+      row('Deelnemers',    d.aantalDeelnemers),
+      row('Bestemming',    d.bestemmingKeuze || d.bestemmingDetail),
+      row('Periode',       d.periode || 'Nader te bepalen'),
+      row('Budget p.p.',   d.budgetPP),
+      row('Contactpersoon',d.voornaam + ' ' + d.achternaam)
+    ].join('');
+
+    el('successWrap').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+})();
+</script>
+</body>
+</html>

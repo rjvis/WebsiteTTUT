@@ -1,0 +1,91 @@
+WEBSITE TOTAL TRAVEL — VERSIE MET DRIE-PIJLER FUNDAMENT
+========================================================
+
+NIEUWE STRUCTUUR (rode draad door de hele site)
+------------------------------------------------
+De homepage is gebouwd rond drie expliciete doelgroepen:
+
+  i.   PRIVÉ REIZEN — luxe maatwerk voor reizigers zelf
+  ii.  ZAKELIJKE INCENTIVES — bedrijfsreizen voor groepen 10-100+ pax
+  iii. REISPROFESSIONALS — collega-bureaus en event-organisatoren
+       (alleen complete reizen op basis van vast budget)
+
+Aangevuld met TWEE expliciete profileringsspecialisaties die voor
+zowel Privé als Zakelijk gelden:
+
+  • Arabische bestemmingen (VAE, Oman, Saudi-Arabië, Marokko,
+    Jordanië, Qatar, Bahrein)
+  • Luxe Formule 1 (Abu Dhabi, Bahrein, Saudi, Qatar, Singapore,
+    Monaco, Imola)
+
+SECTIE-VOLGORDE INDEX.HTML
+---------------------------
+  1. Hero — met drie-pijler propositie en specialisatie-belofte
+  2. DRIE PIJLERS (nieuw) — driesprong met "Voor wie wij werken"
+  3. SPECIALISATIES (nieuw) — donker uitgelicht, Arabisch + F1
+  4. Over Total Travel — tekst aangepast aan drie-pijler model
+  5. Werkwijze
+  6. Aangesloten bij UT/LTC
+  7. Contact + Footer (aanbod aangepast aan pijlers + specialisaties)
+
+NAVIGATIE
+---------
+  Hoofdmenu: Bestemmingen ▼ · Thema's ▼ · Voor wie · Specialisaties ·
+             Aangesloten · Reisprofessionals · Reis aanvragen
+  
+  Mobiel: idem + Over ons
+
+ARABIAN RHAPSODY
+----------------
+Het merk Arabian Rhapsody is uit het model verwijderd. De Arabische
+specialisatie staat nu expliciet en prominent op de homepage,
+ondergebracht bij Total Travel zelf.
+
+DRIE INTERNE AFSPRAKEN
+-----------------------
+Om scherpte te bewaken bij toekomstige groei:
+  1. Maximaal 2 profileringsspecialisaties (Arabisch + F1 — voor jaren vast)
+  2. Een nieuwe bestemming wordt pas "specialisatie" na ~7 afgeronde
+     boekingen met tevreden klant
+  3. Maximaal 1-2 nieuwe operationele specialisaties per jaar
+     (eigen bezoek + vaste lokale partner)
+
+Tot die drempel: noem ze "bestemmingen die we persoonlijk kennen"
+in plaats van "specialisaties".
+
+MAPSTRUCTUUR
+------------
+WebsiteTT/
+├─ index.html                       (volledig herzien, drie-pijler basis)
+├─ marokko.html                     (origineel, ongewijzigd)
+├─ totaltravel-aanvraag.html        (origineel, ongewijzigd)
+├─ totaltravel-wederverkoper.html   (origineel — voor Reisprofessionals)
+├─ totaltravel.css                  (origineel, ongewijzigd)
+└─ Media/                           (55 bestanden)
+   ├─ unitedtravel_logo.png
+   ├─ LuxuryTravel_Logo.png
+   ├─ hero-video.mp4
+   └─ ... (53 bestemmings- en thema-foto's)
+
+ONTBREKENDE MEDIA-BESTANDEN
+---------------------------
+De volgende 11 bestanden zijn nog niet beschikbaar, plaats deze
+vanuit je lokale Media-map alsnog (geen breaking issue — site
+werkt zonder, alleen deze submenu-kaartjes blijven leeg):
+
+  F1-locaties:    f1-qatar.jpg, f1-singapore.jpg
+  Golfreizen:     golf-marokko.jpg, golf-portugal.jpg, golf-spanje.jpg
+  Stedentrips:    stad-barcelona.jpg, stad-lissabon.jpg, stad-londen.jpg,
+                  stad-madrid.jpg, stad-newyork.jpg, stad-porto.jpg
+
+VOLGENDE STAPPEN
+----------------
+De index.html is nu het verhaal. Wat eventueel nog nodig is:
+  • Aanvraagformulier (totaltravel-aanvraag.html) uitbreiden met
+    een keuze-vraag "Voor wie is deze aanvraag?" → routing naar
+    de juiste pijler-flow
+  • Reisprofessionals-pagina (totaltravel-wederverkoper.html) 
+    herschrijven met de "alleen complete reizen op vast budget"-
+    boodschap als hoofdpositie
+  • Footer-certificeringen ook op andere pagina's harmoniseren
+    naar specifieke nummers (ANVR 5471 / SGR 3642)
