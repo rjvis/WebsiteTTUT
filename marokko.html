@@ -32,17 +32,17 @@ a{text-decoration:none;color:inherit}
 .cursor-trail{width:36px;height:36px;border:1px solid rgba(212,131,46,.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .4s var(--ease),opacity .3s}
 
 /* ── NAV ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;transition:background .4s,backdrop-filter .4s;background:transparent}
-.nav.scrolled{background:rgba(26,20,16,.9);backdrop-filter:blur(16px)}
-.nav-logo{font-family:var(--dm);font-size:14px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--w);text-decoration:none;transition:color .2s}
-.nav-logo .dot{color:var(--s)}
-.nav-right{display:flex;align-items:center;gap:24px}
-.nav-back{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,248,244,.6);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:8px}
-.nav-back:hover{color:var(--m3)}
-.nav-back svg{transition:transform .2s}
-.nav-back:hover svg{transform:translateX(-3px)}
-.nav-cta{font-family:var(--dm);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;background:var(--s);color:var(--w)!important;padding:9px 22px;transition:background .2s}
-.nav-cta:hover{background:var(--sdk)}
+.mk-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;transition:background .4s,backdrop-filter .4s;background:transparent}
+.mk-nav.scrolled{background:rgba(26,20,16,.9);backdrop-filter:blur(16px)}
+.mk-nav-logo{font-family:var(--dm);font-size:14px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--w);text-decoration:none;transition:color .2s}
+.mk-nav-logo .dot{color:var(--s)}
+.mk-nav-right{display:flex;align-items:center;gap:24px}
+.mk-nav-back{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,248,244,.6);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:8px}
+.mk-nav-back:hover{color:var(--m3)}
+.mk-nav-back svg{transition:transform .2s}
+.mk-nav-back:hover svg{transform:translateX(-3px)}
+.mk-nav-cta{font-family:var(--dm);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;background:var(--s);color:var(--w)!important;padding:9px 22px;transition:background .2s}
+.mk-nav-cta:hover{background:var(--sdk)}
 
 /* ── HERO ── */
 .hero{height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end}
@@ -373,6 +373,7 @@ footer{background:var(--t);padding:80px 48px 48px}
   .footer-top{grid-template-columns:1fr}
 }
 </style>
+<link rel="stylesheet" href="totaltravel.css">
 </head>
 <body>
 <script src="nav.js"></script>

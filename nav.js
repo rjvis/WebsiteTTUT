@@ -6,6 +6,120 @@
  */
 
 (function(){
+  /* ── Injecteer nav-CSS als <style> in <head> ── */
+  /* Zorgt dat nav altijd correct is, ongeacht eigen CSS van de pagina */
+  var navStyle = document.createElement('style');
+  navStyle.id = 'tt-nav-css';
+  navStyle.textContent = `
+:root{
+  --s:#A0522D;--sdk:#7A3E21;--slt:#C4784A;
+  --z:#C4A882;--zlt:#DDD0BC;--zdm:#B09068;
+  --i:#F5F0E8;--iw:#EDE5D8;--ic:#E8DDD0;
+  --t:#2D1F14;--e:#1A1410;--w:#FAF8F4;
+  --sub:#5A4030;--dim:#8A7060;
+  --pf:'Playfair Display',Georgia,serif;
+  --dm:'DM Sans',system-ui,sans-serif;
+  --ease:cubic-bezier(.25,.46,.45,.94);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--dm);background:var(--i);color:var(--e);overflow-x:hidden;cursor:none}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+
+.cursor{width:10px;height:10px;background:var(--s);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .15s var(--ease)}
+.cursor-ring{width:36px;height:36px;border:1px solid var(--s);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .35s var(--ease),opacity .2s;opacity:.6}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:101;height:34px;background:var(--s);display:flex;align-items:center;justify-content:center;padding:0}
+.topbar-inner{width:100%;max-width:1280px;padding:0 48px;display:flex;align-items:center;justify-content:space-between}
+.topbar-left{display:flex;align-items:center;gap:24px}
+.topbar-item{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:400;letter-spacing:.03em;color:rgba(250,248,244,.82);white-space:nowrap;transition:color .2s}
+.topbar-item:hover{color:var(--w)}
+.topbar-item svg{opacity:.7;flex-shrink:0}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.topbar-btn{font-family:var(--dm);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:4px 14px;transition:background .2s,color .2s;white-space:nowrap;cursor:pointer;border:none}
+.topbar-btn.outline{background:transparent;color:rgba(250,248,244,.82);border:1px solid rgba(250,248,244,.3)}
+.topbar-btn.outline:hover{background:rgba(250,248,244,.1);color:var(--w);border-color:rgba(250,248,244,.6)}
+.topbar-btn.solid{background:var(--w);color:var(--s)}
+.topbar-btn.solid:hover{background:var(--i)}
+.topbar-divider{width:1px;height:14px;background:rgba(250,248,244,.2)}
+
+/* NAV */
+nav.scrolled{border-bottom-color:var(--zlt);box-shadow:0 2px 32px rgba(45,31,20,.06)}
+.nav-inner{width:100%;max-width:none;padding:0 40px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px}
+.nav-left{display:flex;align-items:center;gap:16px}
+.nav-center{display:flex;align-items:center;justify-content:center}
+.nav-right{display:flex;align-items:center;justify-content:flex-end;gap:20px}
+.nav-logo{font-family:var(--dm);font-size:22px;font-weight:500;letter-spacing:.20em;text-transform:uppercase;color:var(--t);white-space:nowrap;text-decoration:none;display:inline-block}
+.nav-logo .dot{color:var(--s)}
+.nav-links{display:flex;align-items:center;gap:28px;list-style:none}
+.nav-links a{font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sub);transition:color .2s;white-space:nowrap}
+.nav-links a:hover{color:var(--s)}
+.nav-hamburger-mob{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.nav-hamburger-mob span{width:22px;height:1.5px;background:var(--t);transition:.3s;display:block}
+.nav-cta-hide-mobile{background:var(--s)!important;color:var(--w)!important;padding:9px 22px!important;font-family:var(--dm);font-size:10px!important;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;display:inline-block;white-space:nowrap;transition:background .2s!important;line-height:1}
+.nav-cta-hide-mobile:hover{background:var(--sdk)!important}
+
+/* DROPDOWN — hangt aan nav, niet aan li */
+.has-dropdown{position:static}
+.nav-link-drop{display:flex;align-items:center;gap:5px}
+.nav-arrow{font-size:8px;transition:transform .2s;display:inline-block}
+.has-dropdown:hover .nav-arrow{transform:rotate(180deg)}
+
+/* Nav is de positioning parent voor dropdowns */
+nav{position:fixed;top:34px;left:0;right:0;z-index:100;height:62px;display:flex;align-items:center;justify-content:center;padding:0;background:rgba(250,248,244,.96);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s,top .3s}
+
+.dest-dropdown,.thema-dropdown{
+  position:absolute;
+  top:62px; /* hoogte van de nav */
+  left:0;
+  right:0;
+  visibility:hidden;
+  opacity:0;
+  pointer-events:none;
+  z-index:500;
+  transition:opacity .18s ease, visibility .18s ease;
+}
+.has-dropdown:hover .nav-arrow{transform:rotate(180deg)}
+/* nav-arrow rotation wordt ook via JS inline style gezet */
+
+.dest-dropdown,.thema-dropdown{
+  position:absolute;
+  top:62px;
+  left:0;
+  right:0;
+  visibility:hidden;
+  opacity:0;
+  pointer-events:none;
+  z-index:500;
+  transition:opacity .15s ease, visibility .15s ease;
+}
+/* open/close wordt door JS geregeld via inline styles — geen :hover regel */
+.dd-inner{background:var(--w);border-top:3px solid var(--s);box-shadow:0 24px 64px rgba(45,31,20,.16);display:flex;align-items:stretch;max-width:1480px;margin:0 auto}
+
+/* BESTEMMINGEN */
+.dest-dropdown{}
+.dd-inner.dest-inner{width:100%}
+.dest-continents{width:200px;flex-shrink:0;background:var(--i);border-right:1px solid var(--zlt);display:flex;flex-direction:column;padding:8px 0}
+.dest-continent-btn{padding:11px 18px;font-family:var(--pf);font-size:15px;font-weight:400;color:var(--sub);text-align:left;border:none;background:transparent;cursor:pointer;border-left:3px solid transparent;transition:background .12s,color .12s,border-color .12s;display:flex;align-items:center;justify-content:space-between;white-space:nowrap;width:100%}
+.dest-continent-btn .cnt-count{font-size:10px;font-family:var(--dm);font-weight:400;color:var(--dim);margin-left:8px}
+`;
+  /* Voeg toe aan begin van <head> zodat pagina-eigen CSS het kan overschrijven */
+  var firstStyle = document.head.querySelector('style, link[rel="stylesheet"]');
+  if (firstStyle) {
+    document.head.insertBefore(navStyle, firstStyle);
+  } else {
+    document.head.appendChild(navStyle);
+  }
+
   /* ── Bepaal of we op de homepage zijn of een subpagina ── */
   var isHome = (
     window.location.pathname.endsWith('index.html') ||
