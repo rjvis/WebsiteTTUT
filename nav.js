@@ -111,28 +111,9 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;height:62px;display:flex;
 .dest-continents{width:200px;flex-shrink:0;background:var(--i);border-right:1px solid var(--zlt);display:flex;flex-direction:column;padding:8px 0}
 .dest-continent-btn{padding:11px 18px;font-family:var(--pf);font-size:15px;font-weight:400;color:var(--sub);text-align:left;border:none;background:transparent;cursor:pointer;border-left:3px solid transparent;transition:background .12s,color .12s,border-color .12s;display:flex;align-items:center;justify-content:space-between;white-space:nowrap;width:100%}
 .dest-continent-btn .cnt-count{font-size:10px;font-family:var(--dm);font-weight:400;color:var(--dim);margin-left:8px}
-`;
-  /* Voeg toe aan begin van <head> zodat pagina-eigen CSS het kan overschrijven */
-  var firstStyle = document.head.querySelector('style, link[rel="stylesheet"]');
-  if (firstStyle) {
-    document.head.insertBefore(navStyle, firstStyle);
-  } else {
-    document.head.appendChild(navStyle);
-  }
 
-  /* ── Bepaal of we op de homepage zijn of een subpagina ── */
-  var isHome = (
-    window.location.pathname.endsWith('index.html') ||
-    window.location.pathname.endsWith('/') ||
-    window.location.pathname === ''
-  );
-  var prefix = isHome ? '' : 'index.html';
+/* mobileNav CSS */
 
-  /* ── Nav HTML ── */
-  var navHTML = `<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<style>
 #mobileNav{
   display:none;position:fixed;top:0;left:0;width:100%;height:100%;
   z-index:9999;background:#2D1F14;overflow-y:auto;
@@ -225,7 +206,28 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;height:62px;display:flex;
   text-transform:uppercase;text-align:center;
   text-decoration:none;
 }
-</style>
+`;
+  /* Voeg toe aan begin van <head> zodat pagina-eigen CSS het kan overschrijven */
+  var firstStyle = document.head.querySelector('style, link[rel="stylesheet"]');
+  if (firstStyle) {
+    document.head.insertBefore(navStyle, firstStyle);
+  } else {
+    document.head.appendChild(navStyle);
+  }
+
+  /* ── Bepaal of we op de homepage zijn of een subpagina ── */
+  var isHome = (
+    window.location.pathname.endsWith('index.html') ||
+    window.location.pathname.endsWith('/') ||
+    window.location.pathname === ''
+  );
+  var prefix = isHome ? '' : 'index.html';
+
+  /* ── Nav HTML ── */
+  var navHTML = `<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+
 
 <div id="mobileNav">
   <div class="mn-head">
@@ -540,7 +542,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;height:62px;display:flex;
     <li><a href="#specialisaties">Specialisaties</a></li>
   </ul>
 </div><div class="nav-right"><a href="totaltravel-aanvraag.html" class="nav-cta nav-cta-hide-mobile">Reis aanvragen</a></div></div></nav>
-`;
+``;
 
   /* ── Pas ankers aan voor subpagina's ── */
   if (!isHome) {
