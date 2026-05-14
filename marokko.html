@@ -1271,21 +1271,16 @@ footer{background:var(--t);padding:80px 48px 48px}
 </footer>
 
 <script>
-// Cursor
+// Cursor — null-safe
 var cur=document.getElementById('cursor'),tr=document.getElementById('trail');
 document.addEventListener('mousemove',function(e){
-  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
-  setTimeout(function(){tr.style.left=e.clientX+'px';tr.style.top=e.clientY+'px';},80);
+  if(cur){cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';}
+  if(tr){setTimeout(function(){tr.style.left=e.clientX+'px';tr.style.top=e.clientY+'px';},80);}
 });
 document.querySelectorAll('a,button,.sense-card,.city-card,.story-card,.cta-card').forEach(function(el){
-  el.addEventListener('mouseenter',function(){cur.style.transform='translate(-50%,-50%) scale(2.5)';cur.style.opacity='.4';});
-  el.addEventListener('mouseleave',function(){cur.style.transform='translate(-50%,-50%) scale(1)';cur.style.opacity='1';});
+  el.addEventListener('mouseenter',function(){if(cur){cur.style.transform='translate(-50%,-50%) scale(2.5)';cur.style.opacity='.4';}});
+  el.addEventListener('mouseleave',function(){if(cur){cur.style.transform='translate(-50%,-50%) scale(1)';cur.style.opacity='1';}});
 });
-
-// Nav scroll
-var nav=document.getElementById('nav');
-window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>80);});
-
 // Reveal
 var obs=new IntersectionObserver(function(entries){
   entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
