@@ -3,764 +3,1500 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zakelijke Incentives — Total Travel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="totaltravel.css">
+<title>Incentive Select — Curated Travel Experiences</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap');
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BRAND TOKENS — CONCEPT A
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  --ivory:      #F7F3EC;
+  --ivory2:     #F0EBE1;
+  --cream:      #EDE7DA;
+  --cream2:     #E4DBCA;
+  --parchment:  #D5C9B0;
+  --warm-white: #FAFAF7;
+  --linen:      #C8BCAA;
+
+  --ink:        #1C1A17;
+  --ink-soft:   #3A3630;
+  --ink-mid:    #5A554E;
+  --ink-muted:  #7A746C;
+
+  --gold:       #A8864A;
+  --gold-light: #C9A96E;
+  --gold-pale:  #E8D9BC;
+  --gold-rule:  rgba(168,134,74,0.2);
+  --gold-rule2: rgba(168,134,74,0.12);
+
+  --C: 'Cormorant', serif;   /* display */
+  --J: 'Jost', sans-serif;   /* body / ui */
+  --B: 'Libre Baskerville', serif; /* midweight serif */
+
+  --subnav-h: 36px;
+  --mainnav-h: 68px;
+  --nav-h: 104px;   /* subnav + mainnav combined */
+  --max: 1180px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESET
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+
+body {
+  background: var(--warm-white);
+  color: var(--ink);
+  font-family: var(--J);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+img, video { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   LAYOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 64px; }
+@media (max-width: 900px)  { .wrap { padding: 0 32px; } }
+@media (max-width: 480px)  { .wrap { padding: 0 20px; } }
+
+.sec { padding: 100px 0; }
+@media (max-width: 768px)  { .sec { padding: 72px 0; } }
+@media (max-width: 480px)  { .sec { padding: 56px 0; } }
+
+.sec-border { border-bottom: 1px solid var(--gold-rule); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TYPOGRAPHY UTILITIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.eyebrow {
+  font-family: var(--J);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold);
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 28px;
+}
+.eyebrow::after { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); opacity: .5; }
+
+h2.display {
+  font-family: var(--C); font-weight: 300;
+  font-size: clamp(36px, 5vw, 72px);
+  line-height: 1.0; letter-spacing: -.5px; color: var(--ink);
+}
+h2.display em { font-style: italic; color: var(--gold); }
+
+h3.mid {
+  font-family: var(--B); font-weight: 400;
+  font-size: clamp(20px, 2.5vw, 30px);
+  line-height: 1.25; color: var(--ink);
+}
+
+.body-copy { font-size: 15px; color: var(--ink-soft); line-height: 1.88; }
+.body-copy strong { color: var(--ink); font-weight: 500; }
+
+.gold-rule {
+  display: flex; align-items: center; gap: 12px; margin: 24px 0;
+}
+.gold-rule::before, .gold-rule::after {
+  content: ''; flex: 1; height: 1px; background: var(--gold); opacity: .3;
+}
+.gold-rule-diamond {
+  width: 7px; height: 7px; background: var(--gold);
+  transform: rotate(45deg); flex-shrink: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SUBNAV (bovenste balk)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.subnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 502;
+  height: var(--subnav-h);
+  background: var(--ink);
+  border-bottom: 1px solid rgba(168,134,74,.18);
+}
+/* The .wrap inside subnav must fill the full height */
+.subnav .wrap,
+.nav .wrap {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.subnav-inner {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.subnav-left {
+  display: flex; align-items: center; gap: 24px;
+}
+.subnav-left a {
+  font-family: var(--J); font-size: 10px; font-weight: 400;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(247,243,236,.45); text-decoration: none;
+  transition: color .2s; line-height: 1;
+}
+.subnav-left a:hover { color: var(--gold-light); }
+.subnav-divider { color: rgba(168,134,74,.25); font-size: 10px; line-height: 1; }
+
+.subnav-right {
+  display: flex; align-items: center; gap: 20px;
+}
+.subnav-right a {
+  font-family: var(--J); font-size: 10px; font-weight: 400;
+  letter-spacing: 1.5px; color: rgba(247,243,236,.45);
+  text-decoration: none; transition: color .2s;
+  display: flex; align-items: center; gap: 6px; line-height: 1;
+}
+.subnav-right a:hover { color: var(--gold-light); }
+.subnav-right a svg { width: 12px; height: 12px; opacity: .5; flex-shrink: 0; }
+
+@media (max-width: 900px) { .subnav { display: none; } }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MAIN NAV
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.nav {
+  position: fixed; top: var(--subnav-h); left: 0; right: 0; z-index: 500;
+  height: var(--mainnav-h);
+  background: rgba(250,250,247,.97);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gold-rule);
+  transition: box-shadow .3s;
+}
+.nav.scrolled { box-shadow: 0 4px 32px rgba(28,26,23,.08); }
+
+/* nav-inner: volle breedte, items gecentreerd over hoogte */
+.nav-inner {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+}
+
+/* logo */
+.nav-logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.nav-logo svg { width: 28px; height: 28px; }
+.nav-logo-text {
+  font-family: var(--C); font-size: 18px; font-weight: 300; color: var(--ink);
+  line-height: 1; display: flex; flex-direction: column; gap: 1px;
+}
+.nav-logo-text .nl1 { letter-spacing: 3px; font-size: 11px; font-family: var(--J); font-weight: 500; text-transform: uppercase; color: var(--ink-muted); }
+.nav-logo-text .nl2 { font-style: italic; color: var(--gold); font-size: 20px; }
+
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  font-size: 11px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--ink-muted); transition: color .2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+.nav-cta {
+  font-family: var(--J); font-size: 10px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--ink); border: 1px solid var(--gold);
+  padding: 10px 22px; flex-shrink: 0; transition: background .2s, color .2s;
+}
+.nav-cta:hover { background: var(--gold); color: var(--ivory); }
+
+/* burger */
+.burger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 4px; flex-shrink: 0;
+}
+.burger span { display: block; width: 22px; height: 1px; background: var(--ink); transition: transform .3s, opacity .3s; }
+.burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* mobile menu — top verschuift mee: alleen mainnav zichtbaar op mobiel */
+.mob-menu {
+  display: none; flex-direction: column;
+  position: fixed; top: var(--mainnav-h); left: 0; right: 0; bottom: 0;
+  background: var(--ivory); z-index: 490;
+  padding: 48px 32px; overflow-y: auto; gap: 0;
+}
+.mob-menu.open { display: flex; }
+.mob-menu a {
+  font-family: var(--C); font-size: 28px; font-weight: 300; font-style: italic;
+  color: var(--ink); padding: 20px 0; border-bottom: 1px solid var(--gold-rule);
+  transition: color .2s;
+}
+.mob-menu a:hover { color: var(--gold); }
+.mob-menu .mob-cta {
+  margin-top: 36px; border: 1px solid var(--gold); text-align: center;
+  padding: 16px 24px; font-family: var(--J); font-size: 11px;
+  font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--ink);
+  font-style: normal;
+}
+
+@media (max-width: 900px) {
+  .nav { top: 0; }           /* subnav hidden, mainnav goes to top */
+  .nav-links, .nav-cta { display: none; }
+  .burger { display: flex; }
+  .mob-menu { top: var(--mainnav-h); }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO — VIDEO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.hero {
+  height: 100vh; min-height: 640px;
+  position: relative; overflow: hidden;
+  display: flex;
+  flex-direction: column;       /* stack vertically */
+  justify-content: flex-end;   /* push content to bottom */
+  padding-top: var(--nav-h);
+}
+
+/* video background */
+.hero-video-wrap {
+  position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #1C1A17 0%, #2A2620 40%, #1C1A17 100%);
+}
+.hero-video-wrap video {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  opacity: .55;
+}
+/* fallback placeholder pattern when no video */
+.hero-video-wrap::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(160deg, rgba(28,26,23,.72) 0%, rgba(28,26,23,.38) 55%, rgba(28,26,23,.7) 100%);
+}
+
+/* overlay gradient bottom */
+.hero-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(28,26,23,.88) 0%,
+    rgba(28,26,23,.3) 40%,
+    transparent 70%
+  );
+}
+
+/* corner ornament */
+.hero-corner {
+  position: absolute; top: calc(var(--nav-h) + 28px); right: 56px; z-index: 3;
+  width: 80px; height: 80px;
+  border-top: 1px solid rgba(168,134,74,.4);
+  border-right: 1px solid rgba(168,134,74,.4);
+}
+.hero-corner-dot {
+  position: absolute; bottom: -4px; left: -4px;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--gold);
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  padding-bottom: 80px;
+  max-width: 680px;
+  text-align: left;
+  /* No margin: auto — stays at left edge of wrap container */
+}
+
+.hero-eyebrow {
+  font-family: var(--J); font-size: 10px; font-weight: 500;
+  letter-spacing: 5px; text-transform: uppercase; color: var(--gold-light);
+  display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+  animation: fadeUp .8s ease both .1s;
+}
+.hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+
+.hero h1 {
+  font-family: var(--C); font-weight: 300;
+  font-size: clamp(48px, 7.5vw, 116px);
+  line-height: .92; letter-spacing: -1px; color: var(--ivory);
+  animation: fadeUp .9s ease both .15s;
+}
+.hero h1 em { font-style: italic; color: var(--gold-light); display: block; }
+
+.hero-sub {
+  margin-top: 28px; max-width: 500px;
+  font-size: 16px; color: rgba(247,243,236,.7); line-height: 1.85;
+  animation: fadeUp .8s ease both .3s;
+}
+
+.hero-actions {
+  margin-top: 44px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap;
+  animation: fadeUp .7s ease both .45s;
+}
+
+.btn-ivory {
+  font-family: var(--J); font-size: 11px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  background: var(--ivory); color: var(--ink);
+  padding: 15px 32px; transition: background .2s;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-ivory:hover { background: var(--gold-pale); }
+
+.btn-outline-ivory {
+  font-family: var(--J); font-size: 11px; font-weight: 400;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--ivory); border-bottom: 1px solid rgba(247,243,236,.35);
+  padding-bottom: 2px; transition: color .2s, border-color .2s;
+}
+.btn-outline-ivory:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+/* scroll indicator */
+.hero-scroll {
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: fadeUp 1s ease both .8s;
+}
+.hero-scroll span {
+  font-family: var(--J); font-size: 9px; font-weight: 400;
+  letter-spacing: 3px; text-transform: uppercase; color: rgba(247,243,236,.4);
+}
+.scroll-line {
+  width: 1px; height: 40px; background: rgba(168,134,74,.4);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse { 0%,100%{opacity:.4;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(.6)} }
+
+@media (max-width: 768px) {
+  .hero-content { padding-bottom: 60px; }
+  .hero-corner { display: none; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MARQUEE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.mq-wrap {
+  background: var(--gold); overflow: hidden;
+  height: 36px;                            /* vaste hoogte, minder hoog */
+  display: flex; align-items: center;      /* tekst verticaal gecentreerd */
+  border-top: 1px solid rgba(168,134,74,.25);
+  border-bottom: 1px solid rgba(168,134,74,.25);
+}
+.mq-track {
+  display: flex; animation: marquee 32s linear infinite; white-space: nowrap;
+  align-items: center;
+}
+.mq-item {
+  font-family: var(--J); font-size: 10px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(247,243,236,.75); padding: 0 28px; flex-shrink: 0;
+  line-height: 1;
+}
+.mq-sep { color: rgba(247,243,236,.3); }
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   INTRO / WAT IS INCENTIVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.intro-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start;
+}
+@media (max-width: 768px) { .intro-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+.intro-left h2 { margin-bottom: 24px; }
+.intro-left p { margin-bottom: 14px; }
+.intro-left blockquote {
+  margin-top: 28px;
+  font-family: var(--C); font-style: italic; font-size: 22px;
+  color: var(--gold); line-height: 1.45;
+  border-left: 2px solid var(--gold); padding-left: 22px;
+}
+
+.use-cases { display: flex; flex-direction: column; gap: 2px; }
+.uc {
+  background: var(--cream); border-left: 2px solid var(--gold);
+  padding: 22px 24px; transition: background .2s;
+}
+.uc:hover { background: var(--ivory2); }
+.uc h4 {
+  font-family: var(--B); font-size: 14px; font-weight: 400;
+  color: var(--ink); margin-bottom: 6px;
+}
+.uc p { font-size: 13px; color: var(--ink-muted); line-height: 1.72; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   THEMA'S — full-width with examples
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.themes-head {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 56px; flex-wrap: wrap; gap: 20px;
+}
+.themes-head .th-desc {
+  font-size: 13px; color: var(--ink-muted); max-width: 340px;
+  text-align: right; line-height: 1.8;
+}
+@media (max-width: 600px) { .themes-head .th-desc { text-align: left; } }
+
+/* theme block: alternating layout */
+.theme-block {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--gold-rule);
+  margin-bottom: 2px; overflow: hidden;
+}
+.theme-block.reverse { direction: rtl; }
+.theme-block.reverse > * { direction: ltr; }
+
+@media (max-width: 768px) {
+  .theme-block, .theme-block.reverse { grid-template-columns: 1fr; direction: ltr; }
+}
+
+/* left: text */
+.tb-text {
+  padding: 52px 48px;
+  background: var(--ivory);
+  display: flex; flex-direction: column; justify-content: center;
+}
+@media (max-width: 900px) { .tb-text { padding: 40px 32px; } }
+@media (max-width: 480px) { .tb-text { padding: 32px 20px; } }
+
+.tb-num {
+  font-family: var(--C); font-size: 72px; font-weight: 300;
+  color: rgba(168,134,74,.12); line-height: 1; margin-bottom: 4px;
+  font-style: italic;
+}
+.tb-tag {
+  font-family: var(--J); font-size: 9px; font-weight: 500;
+  letter-spacing: 4px; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+}
+.tb-tag::before { content: ''; display: block; width: 18px; height: 1px; background: var(--gold); }
+
+.tb-text h3 {
+  font-family: var(--C); font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 300; color: var(--ink); line-height: 1.05; margin-bottom: 16px;
+}
+.tb-text h3 em { font-style: italic; color: var(--gold); }
+.tb-text p { font-size: 14px; color: var(--ink-soft); line-height: 1.85; margin-bottom: 12px; }
+
+/* sub-items */
+.tb-subs { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+.tb-sub {
+  padding: 12px 16px; background: var(--cream);
+  border-left: 2px solid var(--gold-pale);
+  transition: border-color .2s, background .2s;
+}
+.tb-sub:hover { border-left-color: var(--gold); background: var(--ivory2); }
+.tb-sub h5 {
+  font-family: var(--B); font-size: 13px; font-weight: 400;
+  color: var(--ink); margin-bottom: 3px;
+}
+.tb-sub p { font-size: 12px; color: var(--ink-muted); line-height: 1.65; }
+
+.tb-examples {
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--gold-rule);
+  font-family: var(--C); font-style: italic; font-size: 15px;
+  color: var(--ink-muted); line-height: 1.5;
+}
+.tb-examples strong { font-style: normal; font-family: var(--J); font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 4px; }
+
+/* right: media panel */
+.tb-media {
+  position: relative; overflow: hidden; min-height: 360px;
+  background: var(--ink-soft);
+}
+@media (max-width: 480px) { .tb-media { min-height: 240px; } }
+
+.tb-media video, .tb-media img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  transition: transform .6s ease;
+}
+.theme-block:hover .tb-media video,
+.theme-block:hover .tb-media img { transform: scale(1.03); }
+
+/* overlay label on media */
+.tb-media-label {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(28,26,23,.75) 0%, transparent 100%);
+  padding: 28px 24px 20px;
+  font-family: var(--J); font-size: 10px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light);
+}
+
+/* placeholder when no media yet */
+.tb-media-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; min-height: 360px;
+}
+.tb-media-placeholder .ph-icon {
+  font-family: var(--C); font-style: italic; font-size: 52px;
+  color: rgba(168,134,74,.2); font-weight: 300;
+}
+.tb-media-placeholder .ph-text {
+  font-family: var(--J); font-size: 9px; font-weight: 400;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(168,134,74,.3); text-align: center; line-height: 1.8;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AANPAK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.aanpak-grid {
+  display: grid; grid-template-columns: 1fr 1.6fr; gap: 72px; align-items: start;
+}
+@media (max-width: 768px) { .aanpak-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+.al p { margin-bottom: 14px; }
+
+.steps { display: flex; flex-direction: column; gap: 2px; }
+.step {
+  display: grid; grid-template-columns: 48px 1fr; gap: 20px; align-items: start;
+  padding: 22px 24px; background: var(--cream);
+  border-left: 2px solid transparent;
+  transition: border-color .2s, background .2s;
+}
+.step:hover { border-left-color: var(--gold); background: var(--ivory2); }
+.step-n {
+  font-family: var(--C); font-style: italic; font-size: 32px;
+  color: var(--gold-light); line-height: 1; font-weight: 300;
+}
+.step-b h4 { font-family: var(--B); font-size: 14px; font-weight: 400; color: var(--ink); margin-bottom: 6px; }
+.step-b p { font-size: 13px; color: var(--ink-muted); line-height: 1.72; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CIJFERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cijfers {
+  background: var(--ink); padding: 72px 0;
+}
+.cijfers-inner {
+  display: grid; grid-template-columns: repeat(4,1fr);
+}
+@media (max-width: 700px) {
+  .cijfers-inner { grid-template-columns: 1fr 1fr; }
+  .cij { padding: 28px; border-right: none; border-bottom: 1px solid rgba(168,134,74,.12); }
+  .cij:nth-child(odd) { border-right: 1px solid rgba(168,134,74,.12); }
+  .cij:nth-child(3), .cij:nth-child(4) { border-bottom: none; }
+}
+
+.cij {
+  padding: 0 48px; border-right: 1px solid rgba(168,134,74,.15);
+}
+.cij:first-child { padding-left: 0; }
+@media (max-width: 700px) { .cij:first-child { padding-left: 28px; } }
+.cij:last-child { border-right: none; }
+.cij-num {
+  font-family: var(--C); font-weight: 300; font-size: 56px;
+  color: var(--gold-light); line-height: 1; letter-spacing: -1px;
+}
+.cij-label {
+  font-family: var(--J); font-size: 10px; font-weight: 400;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(168,134,74,.5); margin-top: 6px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BESTEMMINGEN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.dest-head {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 48px; flex-wrap: wrap; gap: 20px;
+}
+.dest-head p { font-size: 13px; color: var(--ink-muted); max-width: 320px; text-align: right; line-height: 1.8; }
+@media (max-width: 600px) { .dest-head p { text-align: left; } }
+
+.dest-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  grid-template-rows: 240px 240px;
+  gap: 2px;
+}
+@media (max-width: 900px) {
+  .dest-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .dest.big { grid-row: span 1; min-height: 200px; }
+}
+@media (max-width: 500px) { .dest-grid { grid-template-columns: 1fr; } }
+
+.dest {
+  position: relative; overflow: hidden; background: var(--ink-soft);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 24px 26px;
+}
+.dest.big { grid-row: span 2; }
+
+.dest-media {
+  position: absolute; inset: 0;
+  object-fit: cover; object-position: center; width: 100%; height: 100%;
+  transition: transform .5s ease;
+}
+.dest:hover .dest-media { transform: scale(1.04); }
+
+.dest-ov {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(28,26,23,.92) 0%, rgba(28,26,23,.2) 55%, transparent 100%);
+}
+/* gold left border on hover */
+.dest::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 3px; height: 100%; background: var(--gold); z-index: 2;
+  transform: scaleY(0); transform-origin: bottom; transition: transform .3s ease;
+}
+.dest:hover::before { transform: scaleY(1); }
+
+.dest-c { position: relative; z-index: 3; }
+.dest-tag {
+  font-family: var(--J); font-size: 9px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 5px;
+}
+.dest h3 {
+  font-family: var(--C); font-size: clamp(18px, 2vw, 26px);
+  font-weight: 300; color: var(--ivory); line-height: 1.05;
+}
+.dest-sub {
+  font-family: var(--C); font-style: italic; font-size: 13px;
+  color: rgba(247,243,236,.6); margin-top: 4px;
+}
+
+/* placeholder */
+.dest-ph {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.dest-ph span {
+  font-family: var(--J); font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(168,134,74,.25);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   QUOTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.quote-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
+}
+@media (max-width: 768px) { .quote-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+.ql blockquote {
+  font-family: var(--C); font-style: italic; font-weight: 300;
+  font-size: clamp(22px, 2.8vw, 42px); color: var(--ink); line-height: 1.3;
+}
+.ql cite {
+  display: block; margin-top: 20px;
+  font-family: var(--J); font-style: normal; font-size: 10px;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
+}
+.qr { display: flex; flex-direction: column; gap: 2px; }
+.qi {
+  padding: 16px 20px; background: var(--cream);
+  border-left: 2px solid transparent;
+  display: flex; align-items: center; gap: 14px;
+  font-size: 13px; color: var(--ink-soft);
+  transition: border-color .2s, background .2s;
+}
+.qi:hover { border-left-color: var(--gold); background: var(--ivory2); }
+.qi::before {
+  content: ''; display: block; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--gold); flex-shrink: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CONTACT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; }
+@media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+.cl h2 { margin-bottom: 20px; }
+.cl > .body-copy { margin-bottom: 28px; }
+
+.c-deets { display: flex; flex-direction: column; gap: 2px; margin-bottom: 0; }
+.cdr {
+  background: var(--cream); border-left: 2px solid var(--gold);
+  padding: 13px 18px; display: flex; gap: 16px; align-items: center;
+}
+.cdr-k { font-family: var(--J); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); min-width: 52px; font-weight: 500; }
+.cdr-v { font-size: 13px; color: var(--ink-soft); }
+
+form { display: flex; flex-direction: column; gap: 2px; }
+.fg { display: flex; flex-direction: column; }
+.fg label {
+  font-family: var(--J); font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); padding: 10px 14px 0;
+  background: var(--cream); border: 1px solid var(--gold-rule); border-bottom: none;
+}
+.fg input, .fg select, .fg textarea {
+  background: var(--cream); border: 1px solid var(--gold-rule); border-top: none;
+  color: var(--ink); font-family: var(--J); font-size: 14px; font-weight: 300;
+  padding: 8px 14px 12px; outline: none; resize: none;
+  transition: border-color .2s; -webkit-appearance: none;
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--gold); }
+.fg select option { background: var(--cream); }
+.fg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+@media (max-width: 480px) { .fg2 { grid-template-columns: 1fr; } }
+
+.submit-btn {
+  font-family: var(--J); font-size: 11px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  background: var(--gold); color: var(--ivory); border: none;
+  padding: 16px 28px; cursor: pointer; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: background .2s; width: 100%;
+}
+.submit-btn:hover { background: var(--gold-light); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+footer {
+  background: var(--ink); border-top: 1px solid rgba(168,134,74,.25);
+  padding: 48px 0;
+}
+.footer-inner {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 24px;
+}
+.footer-logo {
+  font-family: var(--C); font-size: 20px; font-weight: 300; font-style: italic;
+  color: var(--gold-light);
+}
+.footer-nav { display: flex; gap: 24px; flex-wrap: wrap; }
+.footer-nav a {
+  font-family: var(--J); font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(247,243,236,.55);            /* was .45 — nu goed leesbaar */
+  transition: color .2s;
+}
+.footer-nav a:hover { color: var(--gold-light); }
+.footer-copy {
+  font-family: var(--J); font-size: 10px;
+  color: rgba(247,243,236,.35);            /* was .25 — nu leesbaar */
+  letter-spacing: 1px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BG HELPERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bg-warm  { background: var(--warm-white); }
+.bg-ivory { background: var(--ivory); }
+.bg-cream { background: var(--cream); }
+.bg-ink   { background: var(--ink); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCROLL REVEAL & ANIMATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .75s ease, transform .75s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+</style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<style>
-#mobileNav{
-  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-  z-index:9999;background:#2D1F14;overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  font-family:'DM Sans',sans-serif;
-}
-#mobileNav.open{display:block}
-#mobileNav .mn-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:18px 24px;
-  border-bottom:1px solid rgba(196,168,130,.18);
-  position:sticky;top:0;background:#2D1F14;z-index:1;
-}
-#mobileNav .mn-wordmark{
-  font-size:13px;font-weight:500;letter-spacing:.2em;
-  text-transform:uppercase;color:#F5F0E8;
-}
-#mobileNav .mn-wordmark span{color:#A0522D}
-#mobileNav .mn-close{
-  background:none;border:none;cursor:pointer;
-  font-size:24px;color:#C4A882;padding:4px 8px;line-height:1;
-}
-#mobileNav .mn-item{
-  border-bottom:1px solid rgba(196,168,130,.1);
-}
-#mobileNav .mn-btn{
-  display:flex;align-items:center;justify-content:space-between;
-  width:100%;padding:17px 24px;
-  background:none;border:none;cursor:pointer;text-align:left;
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:21px;font-weight:400;color:#F5F0E8;
-  -webkit-tap-highlight-color:transparent;
-}
-#mobileNav .mn-btn .mn-plus{
-  font-family:'DM Sans',sans-serif;
-  font-size:22px;font-weight:300;color:#A0522D;
-  flex-shrink:0;margin-left:12px;
-}
-#mobileNav .mn-sub{display:none;background:rgba(0,0,0,.12)}
-#mobileNav .mn-sub.open{display:block}
-#mobileNav .mn-region-btn{
-  display:flex;align-items:center;justify-content:space-between;
-  width:100%;padding:12px 24px 12px 36px;
-  background:none;border:none;cursor:pointer;text-align:left;
-  font-family:'DM Sans',sans-serif;
-  font-size:12px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:#C4A882;
-  border-top:1px solid rgba(196,168,130,.07);
-  text-decoration:none;
-  -webkit-tap-highlight-color:transparent;
-  box-sizing:border-box;
-}
-#mobileNav .mn-region-btn .mn-plus{
-  font-size:16px;color:#B09068;margin-left:10px;
-}
-#mobileNav .mn-region-sub{display:none;padding:4px 0 8px}
-#mobileNav .mn-region-sub.open{display:block}
-#mobileNav .mn-region-sub a{
-  display:block;padding:9px 24px 9px 56px;
-  font-family:'Playfair Display',Georgia,serif;
-  font-style:italic;font-size:16px;
-  color:rgba(245,240,232,.5);
-  text-decoration:none;
-  -webkit-tap-highlight-color:transparent;
-}
-#mobileNav .mn-thema-list{background:rgba(0,0,0,.12);padding:4px 0 8px}
-#mobileNav .mn-thema-list a{
-  display:block;padding:9px 24px 9px 56px;
-  font-family:'Playfair Display',Georgia,serif;
-  font-style:italic;font-size:16px;
-  color:rgba(245,240,232,.5);
-  text-decoration:none;
-  border-bottom:1px solid rgba(196,168,130,.07);
-  -webkit-tap-highlight-color:transparent;
-}
-#mobileNav .mn-thema-list a:last-child{border-bottom:none}
-#mobileNav .mn-direct{
-  display:block;padding:17px 24px;
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:21px;font-weight:400;color:#F5F0E8;
-  text-decoration:none;
-  border-bottom:1px solid rgba(196,168,130,.1);
-  -webkit-tap-highlight-color:transparent;
-}
-#mobileNav .mn-cta{
-  display:block;margin:24px;padding:16px;
-  background:#A0522D;color:#FAF8F4;
-  font-family:'DM Sans',sans-serif;
-  font-size:11px;font-weight:700;letter-spacing:.12em;
-  text-transform:uppercase;text-align:center;
-  text-decoration:none;
-}
-</style>
-
-<div id="mobileNav">
-  <div class="mn-head">
-    <div class="mn-wordmark">TOTAL <span>&middot;</span> TRAVEL</div>
-    <button class="mn-close" onclick="toggleNav()">&#10005;</button>
-  </div>
-
-  <!-- Bestemmingen -->
-  <div class="mn-item">
-    <button class="mn-btn" onclick="mnToggle(this)">
-      Bestemmingen <span class="mn-plus">+</span>
-    </button>
-    <div class="mn-sub">
-      <button class="mn-region-btn" onclick="mnRegion(this)">Afrika <span class="mn-plus">+</span></button>
-      <div class="mn-region-sub">
-        <a href="marokko.html" onclick="toggleNav()">Marokko</a>
-        <a href="#" onclick="toggleNav()">Namibi&euml;</a>
-        <a href="#" onclick="toggleNav()">Zanzibar</a>
-        <a href="#" onclick="toggleNav()">Zuid-Afrika</a>
+<!-- ══════════════════════════════
+     SUBNAV (bovenste balk)
+══════════════════════════════ -->
+<div class="subnav">
+  <div class="wrap">
+    <div class="subnav-inner">
+      <div class="subnav-left">
+        <a href="#wat">Over ons</a>
+        <span class="subnav-divider">·</span>
+        <a href="#aanpak">Werkwijze</a>
+        <span class="subnav-divider">·</span>
+        <a href="#bestemmingen">Bestemmingen</a>
+        <span class="subnav-divider">·</span>
+        <a href="#contact">Nieuws</a>
       </div>
-      <button class="mn-region-btn" onclick="mnRegion(this)">Antarctica <span class="mn-plus">+</span></button>
-      <div class="mn-region-sub">
-        <a href="#" onclick="toggleNav()">Antarctica</a>
-      </div>
-      <button class="mn-region-btn" onclick="mnRegion(this)">Azi&euml; <span class="mn-plus">+</span></button>
-      <div class="mn-region-sub">
-        <a href="#" onclick="toggleNav()">Japan</a>
-        <a href="#" onclick="toggleNav()">Maleisi&euml;</a>
-        <a href="#" onclick="toggleNav()">Singapore</a>
-        <a href="#" onclick="toggleNav()">Thailand</a>
-        <a href="#" onclick="toggleNav()">Vietnam</a>
-      </div>
-      <button class="mn-region-btn" onclick="mnRegion(this)">Europa <span class="mn-plus">+</span></button>
-      <div class="mn-region-sub">
-        <a href="#" onclick="toggleNav()">Denemarken</a>
-        <a href="#" onclick="toggleNav()">Duitsland</a>
-        <a href="#" onclick="toggleNav()">Finland</a>
-        <a href="#" onclick="toggleNav()">Frankrijk</a>
-        <a href="#" onclick="toggleNav()">Griekenland</a>
-        <a href="#" onclick="toggleNav()">Itali&euml;</a>
-        <a href="#" onclick="toggleNav()">Noorwegen</a>
-        <a href="#" onclick="toggleNav()">Oostenrijk</a>
-        <a href="#" onclick="toggleNav()">Portugal</a>
-        <a href="#" onclick="toggleNav()">Spanje</a>
-        <a href="#" onclick="toggleNav()">Zweden</a>
-        <a href="#" onclick="toggleNav()">Zwitserland</a>
-      </div>
-      <button class="mn-region-btn" onclick="mnRegion(this)">Midden-Oosten <span class="mn-plus">+</span></button>
-      <div class="mn-region-sub">
-        <a href="#" onclick="toggleNav()">Bahrein</a>
-        <a href="#" onclick="toggleNav()">Jordani&euml;</a>
-        <a href="#" onclick="toggleNav()">Oman</a>
-        <a href="#" onclick="toggleNav()">Qatar</a>
-        <a href="#" onclick="toggleNav()">Saudi-Arabi&euml;</a>
-        <a href="#" onclick="toggleNav()">Ver. Arabische Emiraten</a>
-      </div>
-      <button class="mn-region-btn" onclick="mnRegion(this)">Noord-Amerika <span class="mn-plus">+</span></button>
-      <div class="mn-region-sub">
-        <a href="#" onclick="toggleNav()">Canada</a>
-        <a href="#" onclick="toggleNav()">Verenigde Staten</a>
-      </div>
-      <button class="mn-region-btn" onclick="mnRegion(this)">Oceani&euml; <span class="mn-plus">+</span></button>
-      <div class="mn-region-sub">
-        <a href="#" onclick="toggleNav()">Australi&euml;</a>
-        <a href="#" onclick="toggleNav()">Nieuw-Zeeland</a>
-      </div>
-      <button class="mn-region-btn" onclick="mnRegion(this)">Zuid-Amerika <span class="mn-plus">+</span></button>
-      <div class="mn-region-sub">
-        <a href="#" onclick="toggleNav()">Argentini&euml;</a>
-        <a href="#" onclick="toggleNav()">Brazili&euml;</a>
-        <a href="#" onclick="toggleNav()">Chili</a>
-        <a href="#" onclick="toggleNav()">Ecuador</a>
+      <div class="subnav-right">
+        <a href="tel:+31786817579">
+          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 9.5c-1 .5-2 1-3 .5C7.5 9.5 5 7 4.5 5.5c-.5-1 0-2 .5-3L3 1C1.5 2 .5 3.5 1 5.5c.5 2.5 3 5.5 5 7 2 1.5 4 1 5.5-.5L12 9.5z" stroke="currentColor" stroke-width=".9"/>
+          </svg>
+          +31 78 681 75 79
+        </a>
+        <span class="subnav-divider">·</span>
+        <a href="mailto:info@incentiveselect.com">
+          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="3" width="12" height="8" rx=".5" stroke="currentColor" stroke-width=".9"/>
+            <path d="M1 3.5l6 4 6-4" stroke="currentColor" stroke-width=".9"/>
+          </svg>
+          info@incentiveselect.com
+        </a>
       </div>
     </div>
   </div>
-
-  <!-- Thema's -->
-  <div class="mn-item">
-    <button class="mn-btn" onclick="mnToggle(this)">
-      Thema's <span class="mn-plus">+</span>
-    </button>
-    <div class="mn-sub">
-      <a href="#" class="mn-region-btn" onclick="toggleNav()">Cruises</a>
-      <a href="#" class="mn-region-btn" onclick="toggleNav()">Formule 1 reizen</a>
-      <a href="#" class="mn-region-btn" onclick="toggleNav()">Golfreizen</a>
-      <a href="#" class="mn-region-btn" onclick="toggleNav()">Incentives</a>
-      <a href="#" class="mn-region-btn" onclick="toggleNav()">Stedentrips</a>
-      <a href="#" class="mn-region-btn" onclick="toggleNav()">Vakantiereizen</a>
-      <a href="#" class="mn-region-btn" onclick="toggleNav()">Voetbalreizen</a>
-    </div>
-  </div>
-
-  <!-- Directe links -->
-  <a class="mn-direct" href="#prive" onclick="toggleNav()">Priv&eacute; Reizen</a>
-  <a class="mn-direct" href="totaltravel-incentives.html" style="color:var(--s)">Zakelijke Incentives</a>
-  <a class="mn-direct" href="totaltravel-wederverkoper.html">Reisprofessionals</a>
-  <a class="mn-direct" href="#specialisaties" onclick="toggleNav()">Specialisaties</a>
-  <a class="mn-direct" href="#over" onclick="toggleNav()">Over ons</a>
-  <a class="mn-direct" href="#aangesloten" onclick="toggleNav()">Aangesloten</a>
-
-  <a class="mn-cta" href="totaltravel-incentive.html" onclick="toggleNav()">Conceptgesprek</a>
 </div>
 
-<div class="topbar">
-  <div class="topbar-inner">
-    <div class="topbar-left">
-      <a href="totaltravel-aanvraag.html" class="topbar-btn outline" style="text-decoration:none">Reis aanvragen</a>
-      <button class="topbar-btn outline">Abonneer op nieuwsbrief</button>
-    </div>
-    <div class="topbar-right">
-      <a href="#over" class="topbar-item">Over ons</a>
-      <div class="topbar-divider"></div>
-      <a href="tel:+31786817579" class="topbar-item">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.17 1.18 2 2 0 012.14 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
-        +31 78 681 75 79
+<!-- ══════════════════════════════
+     NAVIGATION
+══════════════════════════════ -->
+<header class="nav" id="nav">
+  <div class="wrap">
+    <nav class="nav-inner">
+
+      <a href="#" class="nav-logo" aria-label="Incentive Select">
+        <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <polygon points="14,1 27,14 14,27 1,14" stroke="#A8864A" stroke-width=".8"/>
+          <circle cx="14" cy="14" r="4" stroke="#A8864A" stroke-width=".8"/>
+          <circle cx="14" cy="14" r="1.5" fill="#A8864A"/>
+          <polygon points="14,1 16.5,12 14,11 11.5,12" fill="#A8864A" opacity=".9"/>
+        </svg>
+        <div class="nav-logo-text">
+          <span class="nl1">Incentive</span>
+          <span class="nl2">Select</span>
+        </div>
       </a>
-      <div class="topbar-divider"></div>
-      <a href="/cdn-cgi/l/email-protection#046d6a626b44706b7065687076657261682a6a68" class="topbar-item hide-mobile">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        &#105;&#110;&#102;&#111;&#64;&#116;&#111;&#116;&#97;&#108;&#116;&#114;&#97;&#118;&#101;&#108;&#46;&#110;&#108;
-      </a>
+
+      <ul class="nav-links">
+        <li><a href="#wat">Over incentives</a></li>
+        <li><a href="#themas">Thema's</a></li>
+        <li><a href="#aanpak">Aanpak</a></li>
+        <li><a href="#bestemmingen">Bestemmingen</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <a href="#contact" class="nav-cta">Vraag offerte</a>
+
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+    </nav>
+  </div>
+</header>
+
+<nav class="mob-menu" id="mobMenu" aria-hidden="true">
+  <a href="#wat" class="mob-link">Over incentives</a>
+  <a href="#themas" class="mob-link">Thema's</a>
+  <a href="#aanpak" class="mob-link">Aanpak</a>
+  <a href="#bestemmingen" class="mob-link">Bestemmingen</a>
+  <a href="#contact" class="mob-link">Contact</a>
+  <a href="#contact" class="mob-cta">Vraag een offerte</a>
+</nav>
+
+<!-- ══════════════════════════════
+     HERO — VIDEO
+══════════════════════════════ -->
+<section class="hero">
+
+  <!-- VIDEO BACKGROUND
+       Pad: documenten/Incentive Select/WebsiteIS/Media/hero-video.mp4
+       Meerdere formaten voor brede browserondersteuning.
+       Poster = stilstaand fallbackbeeld. -->
+  <div class="hero-video-wrap">
+    <video
+      autoplay muted loop playsinline
+      poster="Media/hero-poster.jpg"
+      aria-hidden="true"
+      style="opacity:0; transition: opacity 1s ease;"
+    >
+      <source src="Media/hero-video.mp4" type="video/mp4">
+      <source src="Media/hero-video.webm" type="video/webm">
+    </video>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-corner"><div class="hero-corner-dot"></div></div>
+
+  <div class="wrap" style="width:100%; display:flex; align-items:flex-end; padding-bottom:0; flex:1;">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Curated Travel Experiences</p>
+      <h1>
+        De wereld<br>
+        <em>als beloning.</em>
+      </h1>
+      <p class="hero-sub">
+        Incentive Select ontwerpt en begeleidt zakelijke groepsreizen die motiveren, verbinden en lang worden herinnerd. Steden, sport, avontuur of architectuur — altijd volledig op maat.
+      </p>
+      <div class="hero-actions">
+        <a href="#themas" class="btn-ivory">Ontdek de thema's</a>
+        <a href="#aanpak" class="btn-outline-ivory">Hoe het werkt →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════
+     MARQUEE
+══════════════════════════════ -->
+<div class="mq-wrap" aria-hidden="true">
+  <div class="mq-track">
+    <span class="mq-item">Incentive Select</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Steden</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Sport</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Avontuur</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Architectuur</span><span class="mq-sep"> · </span>
+    <span class="mq-item">100% Op Maat</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Curated Travel</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Zakelijke Groepen</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Incentive Select</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Steden</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Sport</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Avontuur</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Architectuur</span><span class="mq-sep"> · </span>
+    <span class="mq-item">100% Op Maat</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Curated Travel</span><span class="mq-sep"> · </span>
+    <span class="mq-item">Zakelijke Groepen</span><span class="mq-sep"> · </span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     WAT IS EEN INCENTIVE REIS
+══════════════════════════════ -->
+<section class="sec sec-border bg-ivory" id="wat">
+  <div class="wrap">
+    <div class="intro-grid reveal">
+      <div class="intro-left">
+        <div class="eyebrow">Wat is een incentive reis?</div>
+        <h2 class="display">Motivatie die<br><em>beklijft.</em></h2>
+        <div class="gold-rule"><div class="gold-rule-diamond"></div></div>
+        <p class="body-copy">Een incentive reis is een <strong>strategisch instrument</strong> voor bedrijven die hun mensen willen belonen, motiveren en verbinden. Niet een gewone groepsreis, maar een gedeelde ervaring die lang nawerkt — en meetbare impact heeft op betrokkenheid, loyaliteit en prestaties.</p>
+        <p class="body-copy">Incentive Select is specialist in het ontwerp en de begeleiding van zakelijke groepsreizen. Van HR-managers tot salesteams, van topklanten tot partners: wij bouwen het programma dat het verschil maakt.</p>
+        <blockquote>"Een goed geplande incentive reis is de investering met de hoogste ROI die HR kan doen."</blockquote>
+      </div>
+      <div class="use-cases">
+        <div class="uc reveal reveal-delay-1"><h4>Medewerkersmotivatie</h4><p>Beloon toppers en vergroot saamhorigheid. Een gezamenlijke beleving verhoogt loyaliteit en werktevredenheid aantoonbaar.</p></div>
+        <div class="uc reveal reveal-delay-2"><h4>Sales incentive</h4><p>Activeer uw salesorganisatie met een helder doel. De beste performers verdienen een onvergetelijke groepsreis als beloning.</p></div>
+        <div class="uc reveal reveal-delay-3"><h4>Relatiebeheer</h4><p>Versterk banden met klanten, partners en distributeurs via een exclusieve gedeelde beleving die verder gaat dan een zakendiner.</p></div>
+        <div class="uc reveal"><h4>Teambuilding</h4><p>Managementteams, projectteams, fusie-teams — reizen samen versnelt vertrouwen en samenwerking als niets anders.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     THEMA'S
+══════════════════════════════ -->
+<section class="sec bg-warm" id="themas">
+  <div class="wrap">
+    <div class="themes-head reveal">
+      <div>
+        <div class="eyebrow">Incentive thema's</div>
+        <h2 class="display">Vier thema's.<br><em>Eén specialist.</em></h2>
+      </div>
+      <p class="th-desc">Elk thema wordt ingezet als groepsincentive op maat. U kiest het kader — wij bouwen het programma dat bij uw mensen en doelstelling past.</p>
+    </div>
+  </div>
+
+  <!-- ── THEMA 1: STEDEN ── -->
+  <div class="theme-block reveal">
+    <div class="tb-text">
+      <div class="tb-num">I</div>
+      <div class="tb-tag">Meest gevraagd</div>
+      <h3>Steden</h3>
+      <p>Europese en intercontinentale steden als decor voor een volledig groepsprogramma. Cultuur, gastronomie, teamactiviteiten en exclusieve locaties — telkens samengesteld rondom uw groep en doelstelling.</p>
+
+      <div class="tb-subs">
+        <div class="tb-sub">
+          <h5>Privédiners & gastronomie</h5>
+          <p>Exclusieve tafelreservaties, chef's table ervaringen en culinaire workshops in de stad.</p>
+        </div>
+        <div class="tb-sub">
+          <h5>Stadsprogramma's & teamactiviteiten</h5>
+          <p>Op maat samengestelde city experiences: culturele uitstappen, creatieve workshops, stadsrallyes.</p>
+        </div>
+        <div class="tb-sub">
+          <h5>VIP-ontvangst & transfers</h5>
+          <p>Verzorgde ontvangst, privétransfers en begeleiding gedurende het volledig verblijf.</p>
+        </div>
+      </div>
+
+      <div class="tb-examples">
+        <strong>Voorbeeldbestemmingen</strong>
+        Lissabon · Barcelona · Kopenhagen · Wenen · Madrid · Praag · Dubai · New York · Tokyo · Singapore
+      </div>
+    </div>
+    <div class="tb-media">
+      <!-- Plaatsen: Media/thema-steden.jpg (of .mp4 voor video) -->
+      <div class="tb-media-placeholder">
+        <div class="ph-icon">I</div>
+        <div class="ph-text">Plaatsen hier:<br>Media/thema-steden.jpg</div>
+      </div>
+      <div class="tb-media-label">Steden Incentive</div>
+    </div>
+  </div>
+
+  <!-- ── THEMA 2: SPORTEN ── -->
+  <div class="theme-block reverse reveal">
+    <div class="tb-text">
+      <div class="tb-num">II</div>
+      <div class="tb-tag">Actief & spectaculair</div>
+      <h3>Sport</h3>
+      <p>Sport als bindmiddel én spektakel voor uw groep. Zelf deelnemen of samen beleven — in beide gevallen een onvergetelijke gedeelde beleving die uw team of relaties blijvend verbindt.</p>
+
+      <div class="tb-subs">
+        <div class="tb-sub">
+          <h5>Golf — zelf spelen</h5>
+          <p>Tee-times op iconische parcours: St Andrews, Old Head of Kinsale, Quinta do Lago, Valderrama. Caddie-service, golfcoach en een volledig rahmenprogramma voor de niet-golfer inbegrepen.</p>
+        </div>
+        <div class="tb-sub">
+          <h5>Formule 1 — live beleven</h5>
+          <p>Grand Prix-weekenden met Paddock Club-hospitality, VIP-tribune of exclusieve terrassen. Monaco, Spa-Francorchamps, Silverstone, Abu Dhabi, Singapore.</p>
+        </div>
+        <div class="tb-sub">
+          <h5>Voetbal — op het grote podium</h5>
+          <p>Champions League, Premier League, La Liga of Bundesliga in de meest iconische stadions. Inclusief hospitality en programma rondom de wedstrijd.</p>
+        </div>
+      </div>
+
+      <div class="tb-examples">
+        <strong>Voorbeeldbestemmingen</strong>
+        Schotland · Monaco · Ierland · Portugal · Londen · Madrid · Barcelona · Abu Dhabi · Spa
+      </div>
+    </div>
+    <div class="tb-media">
+      <!-- Plaatsen: Media/thema-sporten.jpg -->
+      <div class="tb-media-placeholder">
+        <div class="ph-icon">II</div>
+        <div class="ph-text">Plaatsen hier:<br>Media/thema-sporten.jpg</div>
+      </div>
+      <div class="tb-media-label">Sport Incentive</div>
+    </div>
+  </div>
+
+  <!-- ── THEMA 3: AVONTUUR ── -->
+  <div class="theme-block reveal">
+    <div class="tb-text">
+      <div class="tb-num">III</div>
+      <div class="tb-tag">Onverwacht & memorabel</div>
+      <h3>Avontuur</h3>
+      <p>Incentives buiten de gebaande paden — voor groepen die meer willen dan een stadstrip. Prikkelende ervaringen in spectaculaire omgevingen die grenzen verleggen en verhalen creëren die jaren worden naverteld.</p>
+
+      <div class="tb-subs">
+        <div class="tb-sub">
+          <h5>Winter incentive — Lapland</h5>
+          <p>Noorderlicht onder de sterrenhemel, husky-safari door het besneeuwde woud, overnachting in een ijshotel. Finlands Lapland in zijn meest magische gedaante.</p>
+        </div>
+        <div class="tb-sub">
+          <h5>Driving experience — on the road</h5>
+          <p>Sportwagens op iconische routes: de slingerende fjordenwegen van Noorwegen, de Italiaanse Alpen, de heuvels van Toscane of de Dolomieten. Een rijdende teambuilding met een ongekende omgeving als decor.</p>
+        </div>
+        <div class="tb-sub">
+          <h5>Wilderness & natuur</h5>
+          <p>IJsland (gletsjertreks, geisers, Auroras), Schotse Hooglanden, Noorse fjorden — voor groepen die authentieke natuur willen combineren met een uitzonderlijk verblijf.</p>
+        </div>
+      </div>
+
+      <div class="tb-examples">
+        <strong>Voorbeeldbestemmingen</strong>
+        Lapland · Noorwegen · IJsland · Toscane · Dolomiten · Schotse Hooglanden · Faeroër
+      </div>
+    </div>
+    <div class="tb-media">
+      <!-- Plaatsen: Media/thema-avontuur.jpg -->
+      <div class="tb-media-placeholder">
+        <div class="ph-icon">III</div>
+        <div class="ph-text">Plaatsen hier:<br>Media/thema-avontuur.jpg</div>
+      </div>
+      <div class="tb-media-label">Avontuur Incentive</div>
+    </div>
+  </div>
+
+  <!-- ── THEMA 4: ARCHITECTUUR ── -->
+  <div class="theme-block reverse reveal">
+    <div class="tb-text">
+      <div class="tb-num">IV</div>
+      <div class="tb-tag">Cultuur & inspiratie</div>
+      <h3>Architectuur</h3>
+      <p>Een curatieve stedentrip rondom architectuur, design en stedenbouw als incentive. Ideaal voor innovatieve bedrijven, vastgoedprofessionals of iedereen die hun groep wil inspireren met een beleving buiten de kaders van het gewone.</p>
+
+      <div class="tb-subs">
+        <div class="tb-sub">
+          <h5>Expert-begeleiding</h5>
+          <p>Rondleidingen door lokale architecten of architectuurhistorici. Diepgaande duiding bij gebouwen, wijken en stedenbouwkundige visies.</p>
+        </div>
+        <div class="tb-sub">
+          <h5>Exclusieve toegang</h5>
+          <p>Bezoeken aan niet-publieke gebouwen, privéwoningen, actieve ateliers en architectenbureaus die normaal gesloten zijn voor het grote publiek.</p>
+        </div>
+        <div class="tb-sub">
+          <h5>Design, kunst & gastronomie</h5>
+          <p>Architectuurreizen worden verrijkt met bezoeken aan designgalerijen, kunstinstellingen en culinaire plekken die de sfeer van de bestemming compleet maken.</p>
+        </div>
+      </div>
+
+      <div class="tb-examples">
+        <strong>Voorbeeldbestemmingen</strong>
+        Barcelona (Gaudí) · Rotterdam (Dutch design) · Tokyo (metabolisme) · Kopenhagen · Venetië (Biënnale) · Helsinki · Brussel (Art Nouveau)
+      </div>
+    </div>
+    <div class="tb-media">
+      <!-- Plaatsen: Media/thema-architectuur.jpg -->
+      <div class="tb-media-placeholder">
+        <div class="ph-icon">IV</div>
+        <div class="ph-text">Plaatsen hier:<br>Media/thema-architectuur.jpg</div>
+      </div>
+      <div class="tb-media-label">Architectuur Incentive</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════
+     AANPAK
+══════════════════════════════ -->
+<section class="sec sec-border bg-ivory" id="aanpak">
+  <div class="wrap">
+    <div class="aanpak-grid reveal">
+      <div class="al">
+        <div class="eyebrow">De aanpak</div>
+        <h2 class="display">Volledig<br>ontzorgd.<br><em>Altijd.</em></h2>
+        <div class="gold-rule"><div class="gold-rule-diamond"></div></div>
+        <p class="body-copy">Van de eerste briefing tot de thuiskomst van uw groep — Incentive Select regelt alles. U bepaalt het doel en het budget. Wij leveren de beleving.</p>
+        <p class="body-copy">Elk programma begint met een grondig gesprek. Wij stellen de juiste vragen, zodat het resultaat naadloos aansluit bij uw mensen en uw doelstelling.</p>
+      </div>
+
+      <div class="steps">
+        <div class="step reveal reveal-delay-1">
+          <div class="step-n">1</div>
+          <div class="step-b"><h4>Briefing & doelstelling</h4><p>We bespreken uw doel, doelgroep en budget. De juiste vragen zorgen dat het programma aansluit bij wat u wilt bereiken.</p></div>
+        </div>
+        <div class="step reveal reveal-delay-2">
+          <div class="step-n">2</div>
+          <div class="step-b"><h4>Conceptvoorstel op maat</h4><p>Binnen 5 werkdagen: volledig uitgewerkt voorstel met bestemming, programma, logistiek en begroting — inclusief alternatieven.</p></div>
+        </div>
+        <div class="step reveal reveal-delay-3">
+          <div class="step-n">3</div>
+          <div class="step-b"><h4>Verfijning & bevestiging</h4><p>We werken het programma verder uit op basis van uw feedback. U geeft akkoord, wij starten de reserveringen en coördinatie.</p></div>
+        </div>
+        <div class="step reveal">
+          <div class="step-n">4</div>
+          <div class="step-b"><h4>Begeleiding ter plaatse</h4><p>Een medewerker van Incentive Select reist mee met uw groep. Wij zijn verantwoordelijk voor elke schakel — u geniet zonder zorgen.</p></div>
+        </div>
+        <div class="step reveal">
+          <div class="step-n">5</div>
+          <div class="step-b"><h4>Evaluatie & nazorg</h4><p>Na de reis: evaluatierapport en aanbevelingen. Vaste klanten plannen jaarlijkse incentivekalenders met retainerafspraken.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     CIJFERS
+══════════════════════════════ -->
+<div class="cijfers reveal">
+  <div class="wrap">
+    <div class="cijfers-inner">
+      <div class="cij"><div class="cij-num">40<span style="font-size:.5em">+</span></div><div class="cij-label">Bestemmingen worldwide</div></div>
+      <div class="cij"><div class="cij-num">4</div><div class="cij-label">Incentive thema's</div></div>
+      <div class="cij"><div class="cij-num">100<span style="font-size:.5em">%</span></div><div class="cij-label">Op maat gemaakt</div></div>
+      <div class="cij"><div class="cij-num">1</div><div class="cij-label">Vast aanspreekpunt</div></div>
     </div>
   </div>
 </div>
 
-<nav id="nav">
-  <div class="nav-inner"><div class="nav-left"><div class="nav-hamburger nav-hamburger-mob" onclick="toggleNav()"><span></span><span></span><span></span></div><a href="index.html" class="nav-logo">TOTAL <span class="dot">&middot;</span> TRAVEL</a></div><div class="nav-center">
-  <ul class="nav-links">
+<!-- ══════════════════════════════
+     BESTEMMINGEN
+══════════════════════════════ -->
+<section class="sec bg-warm" id="bestemmingen">
+  <div class="wrap">
+    <div class="dest-head reveal">
+      <div>
+        <div class="eyebrow">Bestemmingen</div>
+        <h2 class="display">Europa & beyond.<br><em>Curatief gekozen.</em></h2>
+      </div>
+      <p>40+ bestemmingen, elk geselecteerd op bereikbaarheid, capaciteit voor groepen en de kwaliteit van het incentive-aanbod per thema.</p>
+    </div>
 
-    <li class="has-dropdown"><a href="#bestemmingen" class="nav-link-drop">Bestemmingen <span class="nav-arrow">&#9660;</span></a>
-      <div class="dest-dropdown"><div class="dd-inner dest-inner">
-        <div class="dest-continents">
-          <button class="dest-continent-btn active" onmouseenter="showContinent('afrika',this)">Afrika<span class="cnt-count">4</span></button>
-          <button class="dest-continent-btn" onmouseenter="showContinent('antarctica',this)">Antarctica<span class="cnt-count">1</span></button>
-          <button class="dest-continent-btn" onmouseenter="showContinent('azie',this)">Azi&euml;<span class="cnt-count">5</span></button>
-          <button class="dest-continent-btn" onmouseenter="showContinent('europa',this)">Europa<span class="cnt-count">12</span></button>
-          <button class="dest-continent-btn" onmouseenter="showContinent('midden-oosten',this)">Midden-Oosten<span class="cnt-count">6</span></button>
-          <button class="dest-continent-btn" onmouseenter="showContinent('noord-amerika',this)">Noord-Amerika<span class="cnt-count">2</span></button>
-          <button class="dest-continent-btn" onmouseenter="showContinent('oceanie',this)">Oceani&euml;<span class="cnt-count">2</span></button>
-          <button class="dest-continent-btn" onmouseenter="showContinent('zuid-amerika',this)">Zuid-Amerika<span class="cnt-count">4</span></button>
+    <div class="dest-grid">
+      <!-- Grote kaart -->
+      <div class="dest big">
+        <!-- img src="documenten/Incentive Select/WebsiteIS/Media/dest-lissabon.jpg" alt="Lissabon" class="dest-media" -->
+        <div class="dest-ph"><span>dest-lissabon.jpg</span></div>
+        <div class="dest-ov"></div>
+        <div class="dest-c">
+          <div class="dest-tag">Steden · Populairste keuze</div>
+          <h3>Lissabon</h3>
+          <div class="dest-sub">Historie · Gastronomie · Zeelucht · Fado</div>
         </div>
-        <div class="dest-panels">
-
-          <!-- AFRIKA: Marokko, Namibië, Zuid-Afrika, Zanzibar → alfa: Marokko, Namibië, Zanzibar, Zuid-Afrika -->
-          <div class="dest-panel active" id="panel-afrika">
-            <div class="dest-panel-label">Afrika &mdash; 4 bestemmingen</div>
-            <div class="dest-cards">
-              <div class="dest-card" onclick="location='marokko.html'"><div class="dest-card-inner dest-photo" style="background-image:url('Media/marokko.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Marokko</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/namibie.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Namibi&euml;</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/zanzibar.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Zanzibar</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/zuidafrika.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Zuid-Afrika</span></div></div>
-            </div>
-          </div>
-
-          <!-- ANTARCTICA -->
-          <div class="dest-panel" id="panel-antarctica">
-            <div class="dest-panel-label">Antarctica &mdash; 1 bestemming</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/antarctica.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Antarctica</span></div></div>
-            </div>
-          </div>
-
-          <!-- AZIË: alfa: Japan, Maleisië, Singapore, Thailand, Vietnam -->
-          <div class="dest-panel" id="panel-azie">
-            <div class="dest-panel-label">Azi&euml; &mdash; 5 bestemmingen</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/japan.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Japan</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/maleisie.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Maleisi&euml;</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/singapore.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Singapore</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/thailand.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Thailand</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/vietnam.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Vietnam</span></div></div>
-            </div>
-          </div>
-
-          <!-- EUROPA: alfa: Denemarken, Duitsland, Finland, Frankrijk, Griekenland, Italië, Noorwegen, Oostenrijk, Portugal, Spanje, Zweden, Zwitserland -->
-          <div class="dest-panel" id="panel-europa">
-            <div class="dest-panel-label">Europa &mdash; 12 bestemmingen</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/denemarken.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Denemarken</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/duitsland.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Duitsland</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/finland.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Finland</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/frankrijk.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Frankrijk</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/griekenland.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Griekenland</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/italie.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Itali&euml;</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/noorwegen.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Noorwegen</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/oostenrijk.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Oostenrijk</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/portugal.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Portugal</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/spanje.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Spanje</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/zweden.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Zweden</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/zwitserland.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Zwitserland</span></div></div>
-            </div>
-          </div>
-
-          <!-- MIDDEN-OOSTEN: alfa: Bahrein, Jordanië, Oman, Qatar, Saudi-Arabië, Ver. Arabische Emiraten -->
-          <div class="dest-panel" id="panel-midden-oosten">
-            <div class="dest-panel-label">Midden-Oosten &mdash; 6 bestemmingen</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/bahrein.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Bahrein</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/jordanie.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Jordani&euml;</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/oman.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Oman</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/qatar.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Qatar</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/saudiarabie.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Saudi-Arabi&euml;</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/verenigdearabischeemiraten.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Ver. Arabische Emiraten</span></div></div>
-            </div>
-          </div>
-
-          <!-- NOORD-AMERIKA: alfa: Canada, Verenigde Staten -->
-          <div class="dest-panel" id="panel-noord-amerika">
-            <div class="dest-panel-label">Noord-Amerika &mdash; 2 bestemmingen</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/canada.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Canada</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/verenigde-staten.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Verenigde Staten</span></div></div>
-            </div>
-          </div>
-
-          <!-- OCEANIË: alfa: Australië, Nieuw-Zeeland -->
-          <div class="dest-panel" id="panel-oceanie">
-            <div class="dest-panel-label">Oceani&euml; &mdash; 2 bestemmingen</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/australie.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Australi&euml;</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/nieuwzeeland.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Nieuw-Zeeland</span></div></div>
-            </div>
-          </div>
-
-          <!-- ZUID-AMERIKA: alfa: Argentinië, Brazilië, Chili, Ecuador -->
-          <div class="dest-panel" id="panel-zuid-amerika">
-            <div class="dest-panel-label">Zuid-Amerika &mdash; 4 bestemmingen</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/argentinie.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Argentini&euml;</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/brazilie.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Brazili&euml;</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/chili.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Chili</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/ecuador.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Ecuador</span></div></div>
-            </div>
-          </div>
-
+      </div>
+      <!-- Monaco -->
+      <div class="dest">
+        <div class="dest-ph"><span>dest-monaco.jpg</span></div>
+        <div class="dest-ov"></div>
+        <div class="dest-c">
+          <div class="dest-tag">Sport · Formule 1</div>
+          <h3>Monaco</h3>
+          <div class="dest-sub">Grand Prix · Paddock Club · VIP</div>
         </div>
-      </div></div>
-    </li>
-
-
-    <li class="has-dropdown"><a href="#themas" class="nav-link-drop">Thema's <span class="nav-arrow">&#9660;</span></a>
-      <div class="thema-dropdown"><div class="dd-inner thema-inner">
-        <div class="dest-continents">
-          <button class="dest-continent-btn active" onmouseenter="showThema('cruises',this)">Cruises</button>
-          <button class="dest-continent-btn" onmouseenter="showThema('formule1',this)">Formule 1 reizen</button>
-          <button class="dest-continent-btn" onmouseenter="showThema('golf',this)">Golfreizen</button>
-          <button class="dest-continent-btn" onmouseenter="showThema('incentives',this)">Incentives</button>
-          <button class="dest-continent-btn" onmouseenter="showThema('stedentrips',this)">Stedentrips</button>
-          <button class="dest-continent-btn" onmouseenter="showThema('vakantie',this)">Vakantiereizen</button>
-          <button class="dest-continent-btn" onmouseenter="showThema('voetbal',this)">Voetbalreizen</button>
+      </div>
+      <!-- Schotland -->
+      <div class="dest">
+        <div class="dest-ph"><span>dest-schotland.jpg</span></div>
+        <div class="dest-ov"></div>
+        <div class="dest-c">
+          <div class="dest-tag">Sport · Golf</div>
+          <h3>Schotland</h3>
+          <div class="dest-sub">St Andrews · Carnoustie · Whisky</div>
         </div>
-        <div class="dest-panels">
-          <div class="dest-panel active" id="tpanel-cruises">
-            <div class="dest-panel-label">Cruises</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/thema-cruises.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Cruises</span></div></div>
-            </div>
-          </div>
-          <div class="dest-panel" id="tpanel-formule1">
-            <div class="dest-panel-label">Formule 1 reizen</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/f1-abudhabi.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Abu Dhabi</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/f1-bahrein.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Bahrein</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/f1-qatar.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Qatar</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/f1-saudiarabie.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Saudi-Arabi&euml;</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/f1-singapore.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Singapore</span></div></div>
-            </div>
-          </div>
-          <div class="dest-panel" id="tpanel-golf">
-            <div class="dest-panel-label">Golfreizen</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/golf-marokko.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Marokko</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/golf-portugal.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Portugal</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/golf-spanje.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Spanje</span></div></div>
-            </div>
-          </div>
-          <div class="dest-panel" id="tpanel-incentives">
-            <div class="dest-panel-label">Incentives</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/thema-incentives.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Incentives</span></div></div>
-            </div>
-          </div>
-          <div class="dest-panel" id="tpanel-stedentrips">
-            <div class="dest-panel-label">Stedentrips</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/stad-barcelona.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Barcelona</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/stad-lissabon.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Lissabon</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/stad-londen.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Londen</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/stad-madrid.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Madrid</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/stad-newyork.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">New York</span></div></div>
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/stad-porto.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Porto</span></div></div>
-            </div>
-          </div>
-          <div class="dest-panel" id="tpanel-vakantie">
-            <div class="dest-panel-label">Vakantiereizen</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/thema-vakantiereizen.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Vakantiereizen</span></div></div>
-            </div>
-          </div>
-          <div class="dest-panel" id="tpanel-voetbal">
-            <div class="dest-panel-label">Voetbalreizen</div>
-            <div class="dest-cards">
-              <div class="dest-card"><div class="dest-card-inner dest-photo" style="background-image:url('Media/thema-voetbal.jpg')"></div><div class="dest-card-overlay"></div><div class="dest-card-name"><span class="dest-pin">&#9679;</span><span class="dest-name">Voetbalreizen</span></div></div>
-            </div>
-          </div>
+      </div>
+      <!-- Lapland -->
+      <div class="dest">
+        <div class="dest-ph"><span>dest-lapland.jpg</span></div>
+        <div class="dest-ov"></div>
+        <div class="dest-c">
+          <div class="dest-tag">Avontuur · Winter incentive</div>
+          <h3>Lapland</h3>
+          <div class="dest-sub">Noorderlicht · Husky · IJshotel</div>
         </div>
-      </div></div>
-    </li>
-    <li><a href="#prive">Priv&eacute; Reizen</a></li>
-    <li><a href="totaltravel-incentives.html" style="color:var(--s)">Zakelijke Incentives</a></li>
-    <li><a href="totaltravel-wederverkoper.html">Reisprofessionals</a></li>
-    <li><a href="#specialisaties">Specialisaties</a></li>
-  </ul>
-</div><div class="nav-right"><a href="totaltravel-incentive.html" class="nav-cta nav-cta-hide-mobile">Conceptgesprek</a></div></div></nav>
-
-<section class="hero hero-on-video" id="top">
-  <div class="hero-video-wrap"><video autoplay muted loop playsinline preload="none"><source src="Media/hero-video.mp4" type="video/mp4"></video></div>
-  <div class="hero-bg-shape"></div>
-  <div class="hero-bg-line"></div>
-  <div class="hero-rule"></div>
-  <div class="hero-inner">
-    <div class="hero-text">
-      <div class="hero-eyebrow reveal">Zakelijke Incentives &mdash; Total Travel</div>
-      <h1 class="hero-h1 reveal" style="transition-delay:.1s">De wereld<br><em>als beloning.</em></h1>
-      <div class="hero-tagline reveal" style="transition-delay:.2s">Groepsreizen die motiveren &amp; verbinden</div>
-      <p class="hero-body reveal" style="transition-delay:.3s">Total Travel ontwerpt en begeleidt zakelijke groepsreizen die motiveren, verbinden en lang worden herinnerd. Steden, sport, avontuur of architectuur &mdash; altijd volledig op maat, persoonlijk begeleid.</p>
-      <div class="hero-actions reveal" style="transition-delay:.4s">
-        <a href="totaltravel-incentive.html" class="btn-primary">Conceptgesprek aanvragen</a>
-        <a href="#themas" class="btn-ghost">Ontdek de thema&rsquo;s</a>
       </div>
-    </div>
-    <div class="hero-right reveal" style="transition-delay:.25s">
-      <div class="hero-stat-row">
-        <div><div class="hero-stat-num">40+</div><div class="hero-stat-lbl">Bestemmingen</div></div>
-        <div><div class="hero-stat-num">4</div><div class="hero-stat-lbl">Incentive thema&rsquo;s</div></div>
-        <div><div class="hero-stat-num">100%</div><div class="hero-stat-lbl">Op maat</div></div>
-      </div>
-      <div class="hero-monogram"><span>TT</span></div>
-    </div>
-  </div>
-  <div class="scroll-hint"><div class="scroll-hint-line"></div><span>Scroll</span></div>
-</section>
-
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <span class="marquee-item">Zakelijke Incentives</span><span class="marquee-item">Steden</span><span class="marquee-item">Sport &amp; Formule 1</span><span class="marquee-item">Avontuur</span><span class="marquee-item">Architectuur</span><span class="marquee-item">100% Op Maat</span><span class="marquee-item">Curated Travel</span><span class="marquee-item">Zakelijke Groepen</span><span class="marquee-item">Zakelijke Incentives</span><span class="marquee-item">Steden</span><span class="marquee-item">Sport &amp; Formule 1</span><span class="marquee-item">Avontuur</span><span class="marquee-item">Architectuur</span><span class="marquee-item">100% Op Maat</span><span class="marquee-item">Curated Travel</span><span class="marquee-item">Zakelijke Groepen</span>
-  </div>
-</div>
-
-<!-- WAT IS EEN INCENTIVE REIS -->
-<section id="pijlers">
-  <div class="pijlers-wrap">
-    <div class="pijlers-head">
-      <div class="pijlers-label reveal">Wat is een incentive reis?</div>
-      <h2 class="pijlers-h2 reveal" style="transition-delay:.1s">Motivatie die<br><em>beklijft.</em></h2>
-      <p class="pijlers-intro reveal" style="transition-delay:.2s">Een incentive reis is een <strong>strategisch instrument</strong> voor bedrijven die hun mensen willen belonen, motiveren en verbinden. Niet een gewone groepsreis, maar een gedeelde ervaring die lang nawerkt &mdash; en meetbare impact heeft op betrokkenheid, loyaliteit en prestaties.<br><br>Total Travel is specialist in het ontwerp en de begeleiding van zakelijke groepsreizen. Van HR-managers tot salesteams, van topklanten tot partners: wij bouwen het programma dat het verschil maakt.<br><br><em>&ldquo;Een goed geplande incentive reis is de investering met de hoogste ROI die HR kan doen.&rdquo;</em></p>
-    </div>
-    <div class="pijlers-grid">
-      <div class="pijler reveal" id="prive">
-        <div class="pijler-num">i.</div>
-        <h3 class="pijler-titel">Medewerkersmotivatie</h3>
-        <p class="pijler-sub">Beloon toppers, vergroot saamhorigheid.</p>
-        <p class="pijler-body">Een gezamenlijke beleving verhoogt loyaliteit en werktevredenheid aantoonbaar.</p>
-        <div class="pijler-cta"><a href="totaltravel-incentive.html">Conceptgesprek &rarr;</a></div>
-      </div>
-      <div class="pijler reveal" id="zakelijk" style="transition-delay:.1s">
-        <div class="pijler-num">ii.</div>
-        <h3 class="pijler-titel">Sales incentive</h3>
-        <p class="pijler-sub">Activeer uw salesorganisatie.</p>
-        <p class="pijler-body">De beste performers verdienen een onvergetelijke groepsreis als beloning.</p>
-        <div class="pijler-cta"><a href="totaltravel-incentive.html">Conceptgesprek &rarr;</a></div>
-      </div>
-      <div class="pijler reveal" style="transition-delay:.2s">
-        <div class="pijler-num">iii.</div>
-        <h3 class="pijler-titel">Relatiebeheer &amp; teambuilding</h3>
-        <p class="pijler-sub">Versterk banden die tellen.</p>
-        <p class="pijler-body">Klanten, partners, distributeurs &mdash; een exclusieve gedeelde beleving versterkt relaties op een manier die geen zakendiner kan evenaren. Managementteams, projectteams, fusie-teams &mdash; reizen versnelt vertrouwen als niets anders.</p>
-        <div class="pijler-cta"><a href="totaltravel-incentive.html">Conceptgesprek &rarr;</a></div>
+      <!-- Barcelona -->
+      <div class="dest">
+        <div class="dest-ph"><span>dest-barcelona.jpg</span></div>
+        <div class="dest-ov"></div>
+        <div class="dest-c">
+          <div class="dest-tag">Architectuur · Design</div>
+          <h3>Barcelona</h3>
+          <div class="dest-sub">Gaudí · Eixample · Avant-garde</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- THEMA'S INTRO -->
-<section id="specialisaties">
-  <div class="spec-wrap">
-    <div class="spec-head">
-      <div class="spec-label reveal">Incentive thema&rsquo;s</div>
-      <h2 class="spec-h2 reveal" style="transition-delay:.1s">Vier thema&rsquo;s.<br><em>E&eacute;n specialist.</em></h2>
-      <p class="spec-intro reveal" style="transition-delay:.2s">Elk thema wordt ingezet als groepsincentive op maat. U kiest het kader &mdash; wij bouwen het programma dat bij uw mensen en doelstelling past.</p>
-    </div>
-  </div>
-</section>
-
-<!-- THEMA I: STEDEN -->
-<section id="themas">
-  <div class="over-wrap">
-    <div class="over-inner">
-      <div class="over-text">
-        <div class="over-label reveal">Thema I &mdash; Meest gevraagd</div>
-        <h2 class="over-h2 reveal" style="transition-delay:.1s">Steden</h2>
-        <div class="over-rule reveal"></div>
-        <p class="over-body reveal" style="transition-delay:.2s">Europese en intercontinentale steden als decor voor een volledig groepsprogramma. Cultuur, gastronomie, teamactiviteiten en exclusieve locaties &mdash; telkens samengesteld rondom uw groep en doelstelling.</p>
-        <p class="over-body reveal" style="transition-delay:.25s"><em>Lissabon &middot; Barcelona &middot; Kopenhagen &middot; Wenen &middot; Madrid &middot; Praag &middot; Dubai &middot; New York &middot; Tokyo &middot; Singapore</em></p>
+<!-- ══════════════════════════════
+     QUOTE
+══════════════════════════════ -->
+<section class="sec sec-border bg-cream">
+  <div class="wrap">
+    <div class="quote-grid reveal">
+      <div class="ql">
+        <blockquote>"Wij verkopen geen bestemmingen. Wij verkopen de reden om terug te willen."</blockquote>
+        <cite>Incentive Select · Kernbelofte</cite>
       </div>
-      <div class="over-feiten">
-        <div class="over-feit reveal"><div class="feit-num">&#9670;</div><div class="feit-lbl"><strong>Priv&eacute;diners &amp; gastronomie</strong><br>Exclusieve tafelreservaties, chef&rsquo;s table ervaringen en culinaire workshops in de stad.</div></div>
-        <div class="over-feit reveal" style="transition-delay:.1s"><div class="feit-num">&#9670;</div><div class="feit-lbl"><strong>Stadsprogramma&rsquo;s &amp; teamactiviteiten</strong><br>Op maat samengestelde city experiences: culturele uitstappen, creatieve workshops, stadsrallyes.</div></div>
-        <div class="over-feit reveal" style="transition-delay:.2s"><div class="feit-num">&#9670;</div><div class="feit-lbl"><strong>VIP-ontvangst &amp; transfers</strong><br>Verzorgde ontvangst, priv&eacute;transfers en begeleiding gedurende het volledig verblijf.</div></div>
+      <div class="qr">
+        <div class="qi">Volledig ontzorgd — van brief tot terugkeer</div>
+        <div class="qi">Vier thema's: Steden, Sport, Avontuur, Architectuur</div>
+        <div class="qi">Persoonlijke begeleiding ter plaatse</div>
+        <div class="qi">Elk programma 100% op maat gemaakt</div>
+        <div class="qi">Transparante begroting voor HR & CFO</div>
+        <div class="qi">Sterk netwerk van lokale partners & insiders</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- THEMA II: SPORT -->
-<section>
-  <div class="over-wrap" style="background:var(--iw)">
-    <div class="over-inner" style="flex-direction:row-reverse">
-      <div class="over-text">
-        <div class="over-label reveal">Thema II &mdash; Actief &amp; spectaculair</div>
-        <h2 class="over-h2 reveal" style="transition-delay:.1s">Sport</h2>
-        <div class="over-rule reveal"></div>
-        <p class="over-body reveal" style="transition-delay:.2s">Sport als bindmiddel &eacute;n spektakel voor uw groep. Zelf deelnemen of samen beleven &mdash; in beide gevallen een onvergetelijke gedeelde beleving die uw team of relaties blijvend verbindt.</p>
-        <p class="over-body reveal" style="transition-delay:.25s"><em>Schotland &middot; Monaco &middot; Ierland &middot; Portugal &middot; Londen &middot; Madrid &middot; Barcelona &middot; Abu Dhabi &middot; Spa</em></p>
+<!-- ══════════════════════════════
+     CONTACT
+══════════════════════════════ -->
+<section class="sec bg-ivory" id="contact">
+  <div class="wrap">
+    <div class="contact-grid reveal">
+      <div class="cl">
+        <div class="eyebrow">Neem contact op</div>
+        <h2 class="display">Plan uw<br><em>incentive.</em></h2>
+        <div class="gold-rule"><div class="gold-rule-diamond"></div></div>
+        <p class="body-copy">Vertel ons over uw groep, uw doelstelling en uw budget. Binnen 48 uur ontvangt u een eerste voorstel op maat — zonder verplichtingen.</p>
+        <div class="c-deets" style="margin-top:24px;">
+          <div class="cdr"><span class="cdr-k">Email</span><span class="cdr-v">info@incentiveselect.com</span></div>
+          <div class="cdr"><span class="cdr-k">Tel</span><span class="cdr-v">+31 78 681 75 79</span></div>
+          <div class="cdr"><span class="cdr-k">Web</span><span class="cdr-v">www.incentiveselect.com</span></div>
+        </div>
       </div>
-      <div class="over-feiten">
-        <div class="over-feit reveal"><div class="feit-num">&#9670;</div><div class="feit-lbl"><strong>Golf &mdash; zelf spelen</strong><br>Tee-times op iconische parcours: St Andrews, Old Head of Kinsale, Quinta do Lago, Valderrama. Caddie-service en volledig rahmenprogramma inbegrepen.</div></div>
-        <div class="over-feit reveal" style="transition-delay:.1s"><div class="feit-num">&#9670;</div><div class="feit-lbl"><strong>Formule 1 &mdash; live beleven</strong><br>Grand Prix-weekenden met Paddock Club-hospitality, VIP-tribune of exclusieve terrassen. Monaco, Spa-Francorchamps, Silverstone, Abu Dhabi, Singapore.</div></div>
-        <div class="over-feit reveal" style="transition-delay:.2s"><div class="feit-num">&#9670;</div><div class="feit-lbl"><strong>Voetbal &mdash; op het grote podium</strong><br>Champions League, Premier League, La Liga of Bundesliga in de meest iconische stadions, inclusief hospitality.</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- THEMA III: AVONTUUR -->
-<section>
-  <div class="over-wrap">
-    <div class="over-inner">
-      <div class="over-text">
-        <div class="over-label reveal">Thema III &mdash; Onverwacht &amp; memorabel</div>
-        <h2 class="over-h2 reveal" style="transition-delay:.1s">Avontuur</h2>
-        <div class="over-rule reveal"></div>
-        <p class="over-body reveal" style="transition-delay:.2s">Incentives buiten de gebaande paden &mdash; voor groepen die meer willen dan een stadstrip. Prikkelende ervaringen in spectaculaire omgevingen die grenzen verleggen en verhalen cre&euml;ren die jaren worden naverteld.</p>
-        <p class="over-body reveal" style="transition-delay:.25s"><em>Lapland &middot; Noorwegen &middot; IJsland &middot; Toscane &middot; Dolomieten &middot; Schotse Hooglanden &middot; Faero&euml;r</em></p>
-      </div>
-      <div class="over-feiten">
-        <div class="over-feit reveal"><div class="feit-num">&#9670;</div><div class="feit-lbl"><strong>Winter incentive &mdash; Lapland</strong><br>Noorderlicht onder de sterrenhemel, husky-safari door het besneeuwde woud, overnachting in een ijshotel. Finlands Lapland in zijn meest magische gedaante.</div></div>
-        <div class="over-feit reveal" style="transition-delay:.1s"><div class="feit-num">&#9670;</div><div class="feit-lbl"><strong>Driving experience &mdash; on the road</strong><br>Sportwagens op iconische routes: de fjordenwegen van Noorwegen, de Italiaanse Alpen, de heuvels van Toscane of de Dolomieten.</div></div>
-        <div class="over-feit reveal" style="transition-delay:.2s"><div class="feit-num">&#9670;</div><div class="feit-lbl"><strong>Wilderness &amp; natuur</strong><br>IJsland (gletsjertreks, geisers, Auroras), Schotse Hooglanden, Noorse fjorden &mdash; authentieke natuur met een uitzonderlijk verblijf.</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- THEMA IV: ARCHITECTUUR -->
-<section>
-  <div class="over-wrap" style="background:var(--iw)">
-    <div class="over-inner" style="flex-direction:row-reverse">
-      <div class="over-text">
-        <div class="over-label reveal">Thema IV &mdash; Cultuur &amp; inspiratie</div>
-        <h2 class="over-h2 reveal" style="transition-delay:.1s">Architectuur</h2>
-        <div class="over-rule reveal"></div>
-        <p class="over-body reveal" style="transition-delay:.2s">Een curatieve stedentrip rondom architectuur, design en stedenbouw als incentive. Ideaal voor innovatieve bedrijven, vastgoedprofessionals of iedereen die hun groep wil inspireren met een beleving buiten de kaders van het gewone.</p>
-        <p class="over-body reveal" style="transition-delay:.25s"><em>Barcelona (Gaud&iacute;) &middot; Rotterdam &middot; Tokyo &middot; Kopenhagen &middot; Veneti&euml; (Bi&euml;nnale) &middot; Helsinki &middot; Brussel (Art Nouveau)</em></p>
-      </div>
-      <div class="over-feiten">
-        <div class="over-feit reveal"><div class="feit-num">&#9670;</div><div class="feit-lbl"><strong>Expert-begeleiding</strong><br>Rondleidingen door lokale architecten of architectuurhistorici. Diepgaande duiding bij gebouwen, wijken en stedenbouwkundige visies.</div></div>
-        <div class="over-feit reveal" style="transition-delay:.1s"><div class="feit-num">&#9670;</div><div class="feit-lbl"><strong>Exclusieve toegang</strong><br>Bezoeken aan niet-publieke gebouwen, priv&eacute;woningen, actieve ateliers en architectenbureaus die normaal gesloten zijn voor het publiek.</div></div>
-        <div class="over-feit reveal" style="transition-delay:.2s"><div class="feit-num">&#9670;</div><div class="feit-lbl"><strong>Design, kunst &amp; gastronomie</strong><br>Architectuurreizen worden verrijkt met bezoeken aan designgaleries, kunstinstellingen en culinaire plekken.</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- AANPAK -->
-<section id="over">
-  <div class="over-wrap">
-    <div class="over-inner">
-      <div class="over-text">
-        <div class="over-label reveal">De aanpak</div>
-        <h2 class="over-h2 reveal" style="transition-delay:.1s">Volledig<br>ontzorgd.<br><em>Altijd.</em></h2>
-        <div class="over-rule reveal"></div>
-        <p class="over-body reveal" style="transition-delay:.2s">Van de eerste briefing tot de thuiskomst van uw groep &mdash; Total Travel regelt alles. U bepaalt het doel en het budget. Wij leveren de beleving.</p>
-        <p class="over-body reveal" style="transition-delay:.3s">Elk programma begint met een grondig gesprek. Wij stellen de juiste vragen, zodat het resultaat naadloos aansluit bij uw mensen en uw doelstelling.</p>
-      </div>
-      <div class="over-feiten">
-        <div class="over-feit reveal"><div class="feit-num">1</div><div class="feit-lbl"><strong>Briefing &amp; doelstelling</strong><br>We bespreken uw doel, doelgroep en budget. De juiste vragen zorgen dat het programma aansluit bij wat u wilt bereiken.</div></div>
-        <div class="over-feit reveal" style="transition-delay:.1s"><div class="feit-num">2</div><div class="feit-lbl"><strong>Conceptvoorstel op maat</strong><br>Binnen 5 werkdagen: volledig uitgewerkt voorstel met bestemming, programma, logistiek en begroting &mdash; inclusief alternatieven.</div></div>
-        <div class="over-feit reveal" style="transition-delay:.2s"><div class="feit-num">3</div><div class="feit-lbl"><strong>Verfijning &amp; bevestiging</strong><br>We werken het programma verder uit op basis van uw feedback. U geeft akkoord, wij starten de reserveringen en co&ouml;rdinatie.</div></div>
-        <div class="over-feit reveal" style="transition-delay:.3s"><div class="feit-num">4</div><div class="feit-lbl"><strong>Begeleiding ter plaatse</strong><br>Total Travel reist mee met uw groep. Wij zijn verantwoordelijk voor elke schakel &mdash; u geniet zonder zorgen.</div></div>
-        <div class="over-feit reveal" style="transition-delay:.4s"><div class="feit-num">5</div><div class="feit-lbl"><strong>Evaluatie &amp; nazorg</strong><br>Na de reis: evaluatierapport en aanbevelingen. Vaste opdrachtgevers plannen jaarlijkse incentivekalenders.</div></div>
+      <div>
+        <form>
+          <div class="fg2">
+            <div class="fg"><label>Naam</label><input type="text" placeholder="Uw naam"></div>
+            <div class="fg"><label>Bedrijf</label><input type="text" placeholder="Bedrijfsnaam"></div>
+          </div>
+          <div class="fg2">
+            <div class="fg"><label>E-mail</label><input type="email" placeholder="uw@email.be"></div>
+            <div class="fg"><label>Telefoonnummer</label><input type="tel" placeholder="+32 ..."></div>
+          </div>
+          <div class="fg2">
+            <div class="fg">
+              <label>Incentive thema</label>
+              <select>
+                <option>Steden (Europa)</option>
+                <option>Steden (long haul)</option>
+                <option>Sport — Golf</option>
+                <option>Sport — Formule 1</option>
+                <option>Sport — Voetbal</option>
+                <option>Avontuur — Lapland / winter</option>
+                <option>Avontuur — Driving experience</option>
+                <option>Avontuur — Natuur & wilderness</option>
+                <option>Architectuur</option>
+                <option>Combinatie / advies gevraagd</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Groepsgrootte</label>
+              <select>
+                <option>Tot 20 personen</option>
+                <option>20 – 40 personen</option>
+                <option>40 – 75 personen</option>
+                <option>75 – 150 personen</option>
+                <option>150+ personen</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg"><label>Uw boodschap</label><textarea rows="4" placeholder="Beschrijf uw doelstelling, gewenste periode, bestemming (indien al bekend) en eventuele specifieke wensen..."></textarea></div>
+          <button type="submit" class="submit-btn">Verstuur aanvraag</button>
+        </form>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CIJFERS -->
-<section id="werkwijze">
-  <div class="werkwijze-wrap">
-    <div class="werkwijze-head">
-      <div class="werkwijze-label reveal">In cijfers</div>
-      <h2 class="werkwijze-h2 reveal" style="transition-delay:.1s">Wat wij<br><em>bieden.</em></h2>
-    </div>
-    <div class="werkwijze-body">
-      <p class="werkwijze-intro reveal">Transparant, persoonlijk en volledig op maat &mdash; dat is de belofte van Total Travel aan elke opdrachtgever.</p>
-      <div class="werkwijze-stappen">
-        <div class="werkwijze-stap reveal"><div class="stap-n">40+</div><div class="stap-tekst">Bestemmingen worldwide, elk persoonlijk geselecteerd op kwaliteit van het incentive-aanbod</div></div>
-        <div class="werkwijze-stap reveal"><div class="stap-n">4</div><div class="stap-tekst">Incentive thema&rsquo;s: Steden &middot; Sport &middot; Avontuur &middot; Architectuur</div></div>
-        <div class="werkwijze-stap reveal"><div class="stap-n">100%</div><div class="stap-tekst">Op maat gemaakt &mdash; geen standaardpakketten, elk programma uniek gebouwd</div></div>
-        <div class="werkwijze-stap reveal"><div class="stap-n">1</div><div class="stap-tekst">Vast aanspreekpunt van eerste briefing tot terugkeer &mdash; altijd direct contact</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- BESTEMMINGEN -->
-<section id="aangesloten">
-  <div class="aang-wrap">
-    <div class="aang-head">
-      <div class="aang-label reveal">Bestemmingen</div>
-      <h2 class="aang-h2 reveal" style="transition-delay:.1s">Europa &amp; beyond.<br><em>Curatief gekozen.</em></h2>
-    </div>
-    <div class="aang-tekst">
-      <div class="aang-col reveal">
-        <div class="aang-stat"><span class="aang-num" style="font-size:1.4em;font-style:italic">Lissabon</span><span class="aang-lbl">Steden &middot; Populairste keuze &middot; Historie &middot; Gastronomie &middot; Zeelucht &middot; Fado</span></div>
-        <div class="aang-stat"><span class="aang-num" style="font-size:1.4em;font-style:italic">Monaco</span><span class="aang-lbl">Sport &middot; Formule 1 &middot; Grand Prix &middot; Paddock Club &middot; VIP</span></div>
-        <div class="aang-stat"><span class="aang-num" style="font-size:1.4em;font-style:italic">Schotland</span><span class="aang-lbl">Sport &middot; Golf &middot; St Andrews &middot; Carnoustie &middot; Whisky</span></div>
-        <div class="aang-stat"><span class="aang-num" style="font-size:1.4em;font-style:italic">Lapland</span><span class="aang-lbl">Avontuur &middot; Winter incentive &middot; Noorderlicht &middot; Husky &middot; IJshotel</span></div>
-        <div class="aang-stat"><span class="aang-num" style="font-size:1.4em;font-style:italic">Barcelona</span><span class="aang-lbl">Architectuur &middot; Design &middot; Gaud&iacute; &middot; Eixample &middot; Avant-garde</span></div>
-      </div>
-      <div class="aang-col reveal" style="transition-delay:.15s">
-        <p class="aang-body" style="font-size:16px;margin-bottom:24px">40+ bestemmingen, elk geselecteerd op bereikbaarheid, capaciteit voor groepen en de kwaliteit van het incentive-aanbod per thema.</p>
-        <p class="aang-body">Volledig ontzorgd &mdash; van briefing tot terugkeer</p>
-        <p class="aang-body">Vier thema&rsquo;s: Steden, Sport, Avontuur, Architectuur</p>
-        <p class="aang-body">Persoonlijke begeleiding ter plaatse</p>
-        <p class="aang-body">Elk programma 100% op maat gemaakt</p>
-        <p class="aang-body">Transparante begroting voor HR &amp; CFO</p>
-        <p class="aang-body">Sterk netwerk van lokale partners &amp; insiders</p>
-        <p class="aang-body" style="margin-top:16px;font-style:italic">&ldquo;Wij verkopen geen bestemmingen. Wij verkopen de reden om terug te willen.&rdquo;</p>
-        <p class="aang-body" style="margin-top:8px">Total Travel &mdash; aangesloten bij United Travel &amp; Luxury Travel Consultants &middot; ANVR 5471 &middot; SGR 3642</p>
-      </div>
+<!-- ══════════════════════════════
+     FOOTER
+══════════════════════════════ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-logo">Incentive Select</div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="#wat">Over incentives</a>
+        <a href="#themas">Thema's</a>
+        <a href="#aanpak">Aanpak</a>
+        <a href="#bestemmingen">Bestemmingen</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <p class="footer-copy">© 2026 Incentive Select · Curated Travel Experiences</p>
     </div>
   </div>
-</section>
+</footer>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="cta-wrap">
-    <div class="cta-inner">
-      <div class="cta-label reveal">Neem contact op</div>
-      <h2 class="cta-h2 reveal" style="transition-delay:.1s">Plan uw<br><em>incentive.</em></h2>
-      <p class="cta-body reveal" style="transition-delay:.2s">Vertel ons over uw groep, uw doelstelling en uw budget. Binnen 48 uur ontvangt u een eerste voorstel op maat &mdash; zonder verplichtingen.</p>
-      <div class="cta-btns reveal" style="transition-delay:.3s">
-        <a href="totaltravel-incentive.html" class="btn-primary">Conceptgesprek aanvragen</a>
-        <a href="tel:+31786817579" class="btn-ghost">+31 78 681 75 79</a>
-      </div>
-    </div>
-  </div>
-</section>
-
+<!-- ══════════════════════════════
+     JAVASCRIPT
+══════════════════════════════ -->
 <script>
-var cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
-document.addEventListener('mousemove',function(e){cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';});
-var nav=document.getElementById('nav'),topbar=document.querySelector('.topbar');
-window.addEventListener('scroll',function(){
-  var s=window.scrollY>40;
-  nav.classList.toggle('scrolled',s);
-  if(s){topbar.style.transform='translateY(-100%)';topbar.style.transition='transform .3s ease';nav.style.top='0';}
-  else{topbar.style.transform='';nav.style.top='34px';}
+/* ── hamburger ── */
+const burger  = document.getElementById('burger');
+const mobMenu = document.getElementById('mobMenu');
+
+burger.addEventListener('click', () => {
+  const open = burger.classList.toggle('open');
+  mobMenu.classList.toggle('open', open);
+  mobMenu.setAttribute('aria-hidden', String(!open));
+  document.body.style.overflow = open ? 'hidden' : '';
 });
-var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(function(el){obs.observe(el);});
-
-/* Dropdown via JS — sluit pas als muis BEIDE (trigger én dropdown) verlaat */
-document.querySelectorAll('.has-dropdown').forEach(function(li){
-  var dropdown = li.querySelector('.dest-dropdown, .thema-dropdown');
-  var arrow = li.querySelector('.nav-arrow');
-  var timer = null;
-
-  function open(){
-    clearTimeout(timer);
-    dropdown.style.visibility='visible';
-    dropdown.style.opacity='1';
-    dropdown.style.pointerEvents='all';
-    if(arrow) arrow.style.transform='rotate(180deg)';
-  }
-  function scheduleClose(){
-    timer = setTimeout(function(){
-      dropdown.style.visibility='hidden';
-      dropdown.style.opacity='0';
-      dropdown.style.pointerEvents='none';
-      if(arrow) arrow.style.transform='';
-    }, 120);
-  }
-
-  li.addEventListener('mouseenter', open);
-  li.addEventListener('mouseleave', scheduleClose);
-  dropdown.addEventListener('mouseenter', function(){ clearTimeout(timer); });
-  dropdown.addEventListener('mouseleave', scheduleClose);
+document.querySelectorAll('.mob-link, .mob-cta').forEach(a => {
+  a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    mobMenu.classList.remove('open');
+    mobMenu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  });
 });
 
-function showContinent(id,btn){
-  document.querySelectorAll('.dest-panel').forEach(function(p){p.classList.remove('active');});
-  document.querySelectorAll('.dest-continent-btn:not(.empty)').forEach(function(b){b.classList.remove('active');});
-  var panel=document.getElementById('panel-'+id);
-  if(panel)panel.classList.add('active');
-  if(btn)btn.classList.add('active');
-}
-function showThema(id,btn){
-  document.querySelectorAll('[id^="tpanel-"]').forEach(function(p){p.classList.remove('active');});
-  btn.closest('.dest-continents').querySelectorAll('.dest-continent-btn').forEach(function(b){b.classList.remove('active');});
-  var panel=document.getElementById('tpanel-'+id);
-  if(panel)panel.classList.add('active');
-  if(btn)btn.classList.add('active');
-}
-function toggleNav(){
-  var m = document.getElementById('mobileNav');
-  if(m.classList.contains('open')){
-    m.classList.remove('open');
-    m.querySelectorAll('.mn-sub, .mn-region-sub').forEach(function(s){ s.classList.remove('open'); });
-    m.querySelectorAll('.mn-plus').forEach(function(p){ p.textContent = '+'; });
+/* ── subnav: verberg bij scrollen, toon terug bij top ── */
+const subnavEl = document.querySelector('.subnav');
+const mainNavEl = document.getElementById('nav');
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (y > 60) {
+    // Verberg subnav, schuif mainnav naar top
+    if (subnavEl) subnavEl.style.transform = 'translateY(-100%)';
+    mainNavEl.style.top = '0';
   } else {
-    m.classList.add('open');
+    // Toon subnav terug
+    if (subnavEl) subnavEl.style.transform = 'translateY(0)';
+    mainNavEl.style.top = 'var(--subnav-h)';
   }
-}
-function mnToggle(btn){
-  var sub = btn.nextElementSibling;
-  var plus = btn.querySelector('.mn-plus');
-  var isOpen = sub.classList.contains('open');
-  // Sluit andere hoofdsecties
-  btn.closest('#mobileNav').querySelectorAll('.mn-item > .mn-btn + .mn-sub').forEach(function(s){
-    s.classList.remove('open');
+  lastScroll = y;
+}, { passive: true });
+// Smooth transition voor subnav
+if (subnavEl) subnavEl.style.transition = 'transform .3s ease';
+mainNavEl.style.transition = 'top .3s ease, box-shadow .3s';
+
+/* ── nav shadow on scroll ── */
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
+/* ── active nav links ── */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+const actObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+    }
   });
-  btn.closest('#mobileNav').querySelectorAll('.mn-item > .mn-btn .mn-plus').forEach(function(p){
-    p.textContent = '+';
-  });
-  if(!isOpen){
-    sub.classList.add('open');
-    if(plus) plus.textContent = '−';
-  }
+}, { threshold: 0.35 });
+sections.forEach(s => actObs.observe(s));
+
+/* ── scroll reveal ── */
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+/* ── hero scroll indicator hide ── */
+const scrollInd = document.querySelector('.hero-scroll');
+if (scrollInd) {
+  window.addEventListener('scroll', () => {
+    scrollInd.style.opacity = window.scrollY > 80 ? '0' : '1';
+    scrollInd.style.transition = 'opacity .4s';
+  }, { passive: true });
 }
-function mnRegion(btn){
-  var sub = btn.nextElementSibling;
-  var plus = btn.querySelector('.mn-plus');
-  var isOpen = sub.classList.contains('open');
-  // Sluit andere regio's
-  btn.closest('.mn-sub').querySelectorAll('.mn-region-sub').forEach(function(s){ s.classList.remove('open'); });
-  btn.closest('.mn-sub').querySelectorAll('.mn-region-btn .mn-plus').forEach(function(p){ p.textContent = '+'; });
-  if(!isOpen){
-    sub.classList.add('open');
-    if(plus) plus.textContent = '−';
-  }
+
+/* ── Hero video: verberg placeholder zodra video laadt ── */
+const heroVideo = document.querySelector('.hero-video-wrap video');
+if (heroVideo) {
+  const checkVideo = () => {
+    if (heroVideo.readyState >= 2) {
+      heroVideo.style.opacity = '1';
+    }
+  };
+  heroVideo.addEventListener('loadeddata', checkVideo);
+  heroVideo.addEventListener('canplay', checkVideo);
+  // Probeer te laden
+  heroVideo.load();
 }
+
+/* ── Themafoto's: laad img als bestand bestaat ── */
+const mediaFiles = [
+  { panel: 0, src: 'Media/thema-steden.jpg',       alt: 'Steden incentive' },
+  { panel: 1, src: 'Media/thema-sport.jpg',        alt: 'Sport incentive'  },
+  { panel: 2, src: 'Media/thema-avontuur.jpg',     alt: 'Avontuur incentive' },
+  { panel: 3, src: 'Media/thema-architectuur.jpg', alt: 'Architectuur incentive' },
+];
+const mediaPanels = document.querySelectorAll('.tb-media');
+mediaFiles.forEach(({ panel, src, alt }) => {
+  const el = mediaPanels[panel];
+  if (!el) return;
+  const img = new Image();
+  img.onload = () => {
+    img.alt = alt;
+    img.className = 'dest-media';
+    img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .6s ease;';
+    const ph = el.querySelector('.tb-media-placeholder');
+    if (ph) ph.style.display = 'none';
+    el.insertBefore(img, el.firstChild);
+  };
+  img.src = src;
+});
+
+/* ── Bestemmingsfoto's laden ── */
+const destFiles = [
+  'Media/dest-lissabon.jpg',
+  'Media/dest-monaco.jpg',
+  'Media/dest-schotland.jpg',
+  'Media/dest-lapland.jpg',
+  'Media/dest-barcelona.jpg',
+];
+document.querySelectorAll('.dest').forEach((dest, i) => {
+  if (!destFiles[i]) return;
+  const img = new Image();
+  img.onload = () => {
+    img.className = 'dest-media';
+    const ph = dest.querySelector('.dest-ph');
+    if (ph) ph.style.display = 'none';
+    dest.insertBefore(img, dest.firstChild);
+  };
+  img.src = destFiles[i];
+});
 </script>
+
 </body>
 </html>
